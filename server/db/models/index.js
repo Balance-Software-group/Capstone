@@ -10,6 +10,19 @@ const Message = require('./message')
  *    BlogPost.belongsTo(User)
  */
 
+User.hasMany(UserStats)
+UserStats.belongsTo(User)
+User.hasMany(Message)
+Message.belongsTo(User)
+Game.hasMany(UserStats)
+UserStats.belongsTo(Game)
+Game.hasMany(Message)
+Message.belongsTo(Game)
+Game.belongsToMany(User, {through: 'UserGame'})
+User.belongsToMany(Game, {through: 'UserGame'})
+
+const UserGame = db.model('UserGame')
+
 /**
  * We'll export all of our models here, so that any time a module needs a model,
  * we can just require it from 'db/models'
@@ -20,5 +33,6 @@ module.exports = {
   User,
   UserStats,
   Game,
-  Message
+  Message,
+  UserGame
 }
