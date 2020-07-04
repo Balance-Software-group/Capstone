@@ -22,7 +22,7 @@ describe('Message model', () => {
     singleMessage.notARealAttribute = 'not a real attribute'
     const savedSingleMessage = await Message.create(singleMessage)
     expect(savedSingleMessage.content).to.equal('what did you do today?')
-    expect(savedSingleMessage.author).to.equal('cody')
+    expect(savedSingleMessage.author).to.equal('detective')
     expect(savedSingleMessage.scriptPosition).to.equal(5)
     expect(savedSingleMessage.notARealAttribute).to.equal(undefined)
   })
