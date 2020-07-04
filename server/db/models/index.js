@@ -2,6 +2,7 @@ const User = require('./user')
 const UserStats = require('./userStats')
 const Game = require('./game')
 const Message = require('./message')
+const db = require('../db')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
