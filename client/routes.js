@@ -10,7 +10,7 @@ import {me} from './store'
  */
 class Routes extends Component {
   componentDidMount() {
-    this.props.loadInitialData()
+    // this.props.loadInitialData()
   }
 
   render() {
@@ -28,7 +28,7 @@ class Routes extends Component {
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
-        <Route component={Login} />
+        <Route component={Signup} />
       </Switch>
     )
   }
@@ -47,9 +47,9 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    loadInitialData() {
-      dispatch(me())
-    }
+    // loadInitialData() {
+    //   dispatch(me())
+    // }
   }
 }
 
@@ -61,6 +61,6 @@ export default withRouter(connect(mapState, mapDispatch)(Routes))
  * PROP TYPES
  */
 Routes.propTypes = {
-  loadInitialData: PropTypes.func.isRequired,
+  // loadInitialData: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool.isRequired
 }
