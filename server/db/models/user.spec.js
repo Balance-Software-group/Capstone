@@ -1,5 +1,4 @@
 /* global describe beforeEach it */
-
 const {expect} = require('chai')
 const db = require('../index')
 const User = db.model('user')
@@ -9,24 +8,29 @@ describe('User model', () => {
     return db.sync({force: true})
   })
 
-  describe('instanceMethods', () => {
-    describe('correctPassword', () => {
-      let cody
+  let user
+  before(() => db.sync({force: true}))
+  beforeEach(() => {
+    user = {
+      username: 'Cody'
+    }
+  })
+  afterEach(() => db.sync({force: true}))
 
-      beforeEach(async () => {
-        cody = await User.create({
-          email: 'cody@puppybook.com',
-          password: 'bones'
-        })
-      })
+  it('has a username field', async () => {
+    user.notARealAttribute = 'not a real attribute'
+    const savedUser = await User.create(user)
+    expect(savedUser.username).to.equal('Cody')
+    expect(savedUser.notARealAttribute).to.equal(undefined)
+  })
 
-      it('returns true if the password is correct', () => {
-        expect(cody.correctPassword('bones')).to.be.equal(true)
-      })
-
-      it('returns false if the password is incorrect', () => {
-        expect(cody.correctPassword('bonez')).to.be.equal(false)
-      })
-    }) // end describe('correctPassword')
-  }) // end describe('instanceMethods')
-}) // end describe('User model')
+  it('username cannot be null', async () => {
+    const blankUsername = User.build()
+    try {
+      await blankUsername.validate()
+      throw Error('validation should have failed without username')
+    } catch (err) {
+      expect(err.message).to.contain('username cannot be null')
+    }
+  })
+})
