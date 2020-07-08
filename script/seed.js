@@ -1,18 +1,37 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, WordPrompts} = require('../server/db/models')
+const wordPrompts = require('./wordPrompts.json')
+
+//helper function to convert the wordPrompts.json into an JS object array
+function convertWordPrompts(jsonArr) {
+  const convertedWordPrompts = []
+
+  for (let i = 0; i < jsonArr.length; i++) {
+    const name = jsonArr[i].name
+    convertedWordPrompts.push({name})
+  }
+  console.log(convertedWordPrompts)
+  return convertedWordPrompts
+}
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
   const users = await Promise.all([
-    User.create({username: 'cody'}),
-    User.create({username: 'murphy'})
+
+    User.create({username: 'ready2win'}),
+    User.create({username: 'ready2draw'})
+  ])
+
+  const prompts = await Promise.all([
+    WordPrompts.bulkCreate(convertWordPrompts(wordPrompts))
   ])
 
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${prompts.length} bulkCreate of prompts`)
   console.log(`seeded successfully`)
 }
 
