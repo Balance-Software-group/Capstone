@@ -7,3 +7,4 @@ export {default as Navbar} from './Navbar'
 export {default as UserHome} from './UserHome'
 // export {Login, Signup} from './AuthForm' --> commented out when refactoring boilerplate files which implicates user/username
 export {Signup} from './AuthForm'
+export {default as Whiteboard} from './Whiteboard'
