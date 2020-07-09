@@ -16,7 +16,7 @@ function Whiteboard() {
     const context = canvas.getContext('2d')
     context.scale(2, 2)
     context.lineCap = 'round'
-    context.strokeStyle = color
+    context.strokeStyle = 'black'
     context.lineWidth = 6
     contextRef.current = context
   }, [])
@@ -27,7 +27,6 @@ function Whiteboard() {
     contextRef.current.moveTo(offsetX, offsetY)
 
     const context = canvasRef.current.getContext('2d')
-    // const context = canvas.getContext("2d")
     context.strokeStyle = color
 
     setIsDrawing(true)
