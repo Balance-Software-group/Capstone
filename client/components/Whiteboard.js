@@ -1,4 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react'
+import {SketchPicker} from 'react-color'
 
 function Whiteboard() {
   const canvasRef = useRef(null)
@@ -48,6 +49,7 @@ function Whiteboard() {
 
   return (
     <div>
+      <SketchPicker />
       {console.log(typeof color)}
       <button onClick={() => setColor('red')} type="button">
         RED
