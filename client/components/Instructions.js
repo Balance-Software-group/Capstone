@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {Start} from '../components'
 
 export const Instructions = () => {
   return (
@@ -11,8 +11,7 @@ export const Instructions = () => {
         you get a point if you correctly guess the prompt. The player with the
         most points at the end of the game wins.
       </div>
-      <Link to="/create-game">Create Game</Link>
-      <Link to="/join-game">Join Game</Link>
+      <Start />
     </div>
   )
 }
