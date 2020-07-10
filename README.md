@@ -4,6 +4,8 @@
 <h1>Sketch and Guess</h1><br>
 //insert final description here
 
+Here is the deployed link : https://sketch-and-guess.herokuapp.com/
+
 <h2>Game Rules</h2><br>
 //insert final game rules here
 
