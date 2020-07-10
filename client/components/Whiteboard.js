@@ -1,10 +1,11 @@
 import React, {useRef, useEffect, useState} from 'react'
+import {SketchPicker} from 'react-color'
 
 function Whiteboard() {
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
   const [isDrawing, setIsDrawing] = useState(false)
-  const [color, setColor] = useState(true)
+  const [color, setColor] = useState('#000000')
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -48,19 +49,13 @@ function Whiteboard() {
 
   return (
     <div>
+      <SketchPicker
+        color={color}
+        onChangeComplete={color => {
+          setColor(color.hex)
+        }}
+      />
       {console.log(typeof color)}
-      <button onClick={() => setColor('red')} type="button">
-        RED
-      </button>
-      <button onClick={() => setColor('green')} type="button">
-        GREEN
-      </button>
-      <button onClick={() => setColor('yellow')} type="button">
-        YELLOW
-      </button>
-      <button onClick={() => setColor('blue')} type="button">
-        BLUE
-      </button>
       <canvas
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
