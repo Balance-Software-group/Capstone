@@ -13,6 +13,9 @@ const Game = db.define('game', {
   winner: {
     type: Sequelize.STRING,
     defaultValue: null
+  },
+  gameCode: {
+    type: Sequelize.STRING
   }
 })
 
