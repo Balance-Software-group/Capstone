@@ -16,16 +16,11 @@ const AuthForm = props => {
           <label>
             <small>Enter Username</small>
           </label>
-          <input name="username" type="text" />
+          <input name="email" type="text" />
         </div>
+
         <div>
-          <label>
-            <small>Enter Game name</small>
-          </label>
-          <input name="gameName" type="text" />
-        </div>
-        <div>
-          <button type="submit">Start</button>
+          <button type="submit">{displayName}</button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
@@ -69,7 +64,7 @@ const mapDispatch = dispatch => {
 }
 
 // export const Login = connect(mapLogin, mapDispatch)(AuthForm)
-export const Start = connect(mapSignup, mapDispatch)(AuthForm)
+export const Signup = connect(mapSignup, mapDispatch)(AuthForm)
 
 /**
  * PROP TYPES

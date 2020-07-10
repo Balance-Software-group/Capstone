@@ -5,7 +5,7 @@ import {Start} from '../components'
 export const Home = () => {
   return (
     <div>
-      <h3>Welcome Home</h3>
+      <h3>Welcome to Sketch and Guess everybody!</h3>
       <Start />
       <Link to="/instructions">Instructions</Link>
     </div>
