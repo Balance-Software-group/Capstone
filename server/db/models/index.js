@@ -10,8 +10,8 @@ Game.belongsToMany(User, {through: Player})
 Game.belongsToMany(WordPrompts, {through: 'gamePrompts'})
 WordPrompts.belongsToMany(Game, {through: 'gamePrompts'})
 
-Room.hasOne(Game)
-Game.belongsTo(Room)
+// Room.hasOne(Game)
+// Game.belongsTo(Room)
 
 module.exports = {
   User,
