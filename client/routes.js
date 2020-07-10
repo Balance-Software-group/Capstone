@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
-import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, Whiteboard} from './components'
+// import PropTypes from 'prop-types'
+import {Home, Start, UserHome, Instructions, GameRoom} from './components'
 
-import {me} from './store'
+// import {me} from './store'
 
 /**
  * COMPONENT
@@ -20,17 +20,19 @@ class Routes extends Component {
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
-        {/* <Route path="/login" component={Login} /> */}
-        <Route path="/signup" component={Signup} />
+        <Route path="/start" component={Start} />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/instructions" component={Instructions} />
+        <Route exact path="/game" component={GameRoom} />
+
         {isLoggedIn && (
           <Switch>
-            {/* Routes placed here are only available after logging in */}
+            {/* Routes placed here are only available after logging in eventually we want whiteboard here */}
             <Route path="/home" component={UserHome} />
           </Switch>
         )}
-        {/* Displays our Login component as a fallback */}
-        {/* <Route component={Signup} /> */}
-        <Route component={Whiteboard} />
+        {/* Displays our Home component as a fallback */}
+        <Route component={Home} />
       </Switch>
     )
   }
