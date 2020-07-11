@@ -3,29 +3,14 @@ const {User, Game, Player, WordPrompt} = require('../db/models')
 // const Player = require('../db/models/player')
 module.exports = router
 
-//gets game and displays associated users on a 'users' key
+//gets game and displays associated users and wordPrompts on 'users' & 'wordPrompts' key
 router.get('/', async (req, res, next) => {
   try {
-    // const prompts = await WordPrompt.findAll()
-    // console.log('PROMPTS:',prompts)
-
-    // Game.createPrompts(prompts)
-
     const game = await Game.findByPk(req.body.id, {
-      include: [
-        {
-          model: User,
-          as: Player,
-          required: true
-        },
-        {
-          model: WordPrompt,
-          as: 'gamePrompts',
-          required: true
-        }
-      ]
+      //game has a 'users' and 'wordPrompts' field when returned
+      include: [User, WordPrompt]
     })
-    console.log('GAME:', game)
+
     res.json(game)
   } catch (err) {
     next(err)
