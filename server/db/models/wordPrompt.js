@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const WordPrompts = db.define('wordPrompts', {
+const WordPrompt = db.define('wordPrompt', {
   name: {
     type: Sequelize.STRING
   }
 })
 
-module.exports = WordPrompts
+module.exports = WordPrompt
