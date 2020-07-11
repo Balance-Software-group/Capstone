@@ -1,12 +1,12 @@
 import React from 'react'
 import {Button, Comment, Form, Header} from 'semantic-ui-react'
 
-export default function ChatBox() {
+export const ChatBox = () => {
   return (
     <div>
-      <Header as="h3" dividing>
-        Type your guesses and talk to your friends here!
-      </Header>
+      <h1>Hello World</h1>
     </div>
   )
 }
+
+export default ChatBox
