@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const WordPrompt = require('./wordPrompt')
 
 const Game = db.define('game', {
   rounds: {
@@ -19,5 +18,7 @@ const Game = db.define('game', {
     type: Sequelize.STRING
   }
 })
+
+// console.log('GAME prototype',Object.keys(Game))
 
 module.exports = Game

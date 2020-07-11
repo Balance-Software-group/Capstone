@@ -3,7 +3,7 @@ const {User, Game, Player, WordPrompt} = require('../db/models')
 // const Player = require('../db/models/player')
 module.exports = router
 
-//gets game and displays associated users and wordPrompts on 'users' & 'wordPrompts' key
+//gets game and displays associated users and wordPrompts on 'users' & ' key
 router.get('/', async (req, res, next) => {
   try {
     const game = await Game.findByPk(req.body.id, {
