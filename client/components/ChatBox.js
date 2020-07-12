@@ -6,6 +6,7 @@ import {Button, Comment, Form, Header} from 'semantic-ui-react'
 
 import Input from './Input'
 import Messages from './Messages'
+import TextContainer from './TextContainer'
 
 let socket
 
@@ -61,12 +62,13 @@ export const ChatBox = ({location}) => {
       </Header>
       <div>
         <Messages messages={messages} name={name} />
-        <Chat
+        <Input
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
         />
       </div>
+      <TextContainer users={users} />
     </div>
   )
 }
