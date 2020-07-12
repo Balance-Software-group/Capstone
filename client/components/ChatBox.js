@@ -1,7 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
+
 import {Button, Comment, Form, Header} from 'semantic-ui-react'
+
+import Input from './Input'
+import Messages from './Messages'
 
 let socket
 
@@ -52,6 +56,25 @@ export const ChatBox = ({location}) => {
 
   return (
     <div>
+      <Header as="h3" dividing>
+        Type your guesses here and chat with your friends!
+      </Header>
+      <div>
+        <Messages messages={messages} name={name} />
+        <Chat
+          message={message}
+          setMessage={setMessage}
+          sendMessage={sendMessage}
+        />
+      </div>
+    </div>
+  )
+}
+
+export default ChatBox
+
+//Semantic UI div
+/*<div>
       <Comment.Group>
         <Header as="h3" dividing>
           Type your guesses here and chat with your friends!
@@ -60,23 +83,19 @@ export const ChatBox = ({location}) => {
           <Form.TextArea>
             {/* <Form.Input 
               onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} /> */}
-          </Form.TextArea>
-          {/* <Form.Input value= {message} */
-          /* onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}/> */}
-          {/* <Button
-            content="Add Reply"
-            labelPosition="left"
-            icon="edit"
-            primary
-          /> */}
-          <Button type="submit" onClick={e => sendMessage(e)}>
-            Submit
-          </Button>
-        </Form>
-      </Comment.Group>
-    </div>
-  )
-}
-
-export default ChatBox
+              onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} /> */
+// </Form.TextArea>
+/* <Form.Input value= {message} */
+/* onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}/> */
+/* <Button
+                content="Add Reply"
+                labelPosition="left"
+                icon="edit"
+                primary
+              /> */
+/* <Button type="submit" onClick={e => sendMessage(e)}>
+                Submit
+              </Button>
+            </Form>
+          </Comment.Group>
+        </div> */
