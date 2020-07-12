@@ -19,4 +19,6 @@ const Game = db.define('game', {
   }
 })
 
+// console.log('GAME prototype',Object.keys(Game))
+
 module.exports = Game
