@@ -31,7 +31,7 @@ class Routes extends Component {
         <Route exact path="/" component={Home} />
         <Route exact path="/instructions" component={Instructions} />
         <Route exact path="/game" component={GameRoom} />
-        <Route exact path="/chat" component={ChatBox} />
+        <Route path="/chat" component={ChatBox} />
 
         {isLoggedIn && (
           <Switch>
