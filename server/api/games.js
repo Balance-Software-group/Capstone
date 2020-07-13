@@ -48,7 +48,7 @@ router.delete('/', async (req, res, next) => {
       }
     })
 
-    res.json('hi')
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }
