@@ -32,17 +32,14 @@ export const ChatBox = ({location}) => {
     [ENDPOINT, location.search]
   )
 
-  useEffect(
-    () => {
-      socket.on('message', message => {
-        setMessages(messages => [...messages, message])
-      })
-      // socket.on('roomData', ({users}) => {
-      //   setUsers(users)
-      // })
-    },
-    [messages]
-  )
+  useEffect(() => {
+    socket.on('message', message => {
+      setMessages(messages => [...messages, message])
+    })
+    // socket.on('roomData', ({users}) => {
+    //   setUsers(users)
+    // })
+  }, [])
 
   const sendMessage = e => {
     e.preventDefault()

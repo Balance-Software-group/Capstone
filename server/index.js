@@ -84,7 +84,6 @@ io.on('connection', socket => {
 
   socket.on('sendMessage', message => {
     const user = getUser(socket.id)
-    console.log('THIS IS SOCKETTTTTTTTTTT IDDDDDD', socket.id)
     io.to(user.room).emit('message', {user: user.name, text: message})
     io
       .to(user.room)

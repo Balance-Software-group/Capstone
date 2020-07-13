@@ -13,8 +13,6 @@ const addUser = ({id, name, room}) => {
 
   const user = {id, name, room}
   users.push(user)
-  console.log('THIS IS USERS ARRAYYYYYYYYYYY', users)
-  console.log('THIS IS USERRRRRRRRRRR', user)
   return {user}
 }
 
