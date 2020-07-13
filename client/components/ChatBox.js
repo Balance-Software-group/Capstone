@@ -13,6 +13,7 @@ let socket
 export const ChatBox = ({location}) => {
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
+  const [users, setUsers] = useState('')
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
   const ENDPOINT = 'localhost:8080'
@@ -22,10 +23,10 @@ export const ChatBox = ({location}) => {
     () => {
       const {name, room} = queryString.parse(location.search)
 
-      socket = io()
+      socket = io(ENDPOINT)
 
-      setName(name)
       setRoom(room)
+      setName(name)
 
       socket.emit('join', {name, room})
 
@@ -57,10 +58,11 @@ export const ChatBox = ({location}) => {
 
   return (
     <div>
-      <Header as="h3" dividing>
-        Type your guesses here and chat with your friends!
-      </Header>
       <div>
+        <h3>
+          Welcome to room {room}! Type your guesses here and chat with your
+          friends!
+        </h3>
         <Messages messages={messages} name={name} />
         <Input
           message={message}
