@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
+let socket
 
-import {Button, Comment, Form, Header} from 'semantic-ui-react'
+// import {Button, Comment, Form, Header} from 'semantic-ui-react'
 
 import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
-
-let socket
 
 export const ChatBox = ({location}) => {
   const [name, setName] = useState('')
@@ -16,7 +15,7 @@ export const ChatBox = ({location}) => {
   const [users, setUsers] = useState('')
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
-  const ENDPOINT = 'localhost:8080'
+  const ENDPOINT = window.location.origin
   //UPDATE: when we make the rooms live
 
   useEffect(
@@ -29,23 +28,21 @@ export const ChatBox = ({location}) => {
       setName(name)
 
       socket.emit('join', {name, room})
-
-      return () => {
-        socket.emit('disconnect')
-        socket.off()
-      }
     },
     [ENDPOINT, location.search]
   )
 
-  useEffect(() => {
-    socket.on('message', message => {
-      setMessages(messages => [...messages, message])
-    })
-    socket.on('roomData', ({users}) => {
-      setUsers(users)
-    })
-  }, [])
+  useEffect(
+    () => {
+      socket.on('message', message => {
+        setMessages(messages => [...messages, message])
+      })
+      // socket.on('roomData', ({users}) => {
+      //   setUsers(users)
+      // })
+    },
+    [messages]
+  )
 
   const sendMessage = e => {
     e.preventDefault()

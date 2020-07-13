@@ -8,7 +8,7 @@ const Input = ({message, setMessage, sendMessage}) => {
         type="text"
         placeholder="Type your guesses here!"
         value={message}
-        onChange={e => setMessage(e.target.value)}
+        onChange={({target: {value}}) => setMessage(value)}
         onKeyPress={e => (e.key === 'Enter' ? sendMessage(e) : null)}
       />
       <button className="sendButton" onClick={e => sendMessage(e)}>

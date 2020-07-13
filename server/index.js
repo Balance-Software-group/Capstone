@@ -6,9 +6,13 @@ const db = require('./db')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-const {addUser, removeUser, getUser, getUsersInRoom} = require('./socket/users')
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom
+} = require('./socket/helperFunctions')
 
-// const cors = require('cors')
 module.exports = app
 
 const createApp = () => {
@@ -67,6 +71,8 @@ io.on('connection', socket => {
   socket.on('join', ({name, room}) => {
     const {user} = addUser({id: socket.id, name, room})
 
+    socket.join(user.room)
+
     socket.emit('message', {
       text: `${user.name}, welcome to the ${user.room} room!`
     })
@@ -78,6 +84,7 @@ io.on('connection', socket => {
 
   socket.on('sendMessage', message => {
     const user = getUser(socket.id)
+    console.log('THIS IS SOCKETTTTTTTTTTT IDDDDDD', socket.id)
     io.to(user.room).emit('message', {user: user.name, text: message})
     io
       .to(user.room)
@@ -87,7 +94,6 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log(`Connection ${socket.id} has left the building`)
     const user = removeUser(socket.id)
-    console.log('I CAN REMOVE USERS')
     if (user) {
       io
         .to(user.room)
