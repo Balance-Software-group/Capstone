@@ -1,5 +1,5 @@
 import React from 'react'
-import {Whiteboard} from '../components'
+import {Whiteboard, ChatBox} from '../components'
 
 class GameRoom extends React.Component {
   constructor() {
@@ -17,6 +17,7 @@ class GameRoom extends React.Component {
       <div>
         <div>prompt, chatbox, score and more will be here eventually</div>
         <Whiteboard />
+        {/* <ChatBox /> */}
       </div>
     )
   }

@@ -1,10 +1,19 @@
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
+const compression = require('compression')
 const db = require('./db')
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
+
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom
+} = require('./socket/helperFunctions')
+
 module.exports = app
 
 const createApp = () => {
@@ -15,8 +24,10 @@ const createApp = () => {
   app.use(express.json())
   app.use(express.urlencoded({extended: true}))
 
+  // compression middleware
+  app.use(compression())
+
   // auth and api routes
-  // app.use('/auth', require('./auth'))
   app.use('/api', require('./api'))
 
   // static file-serving middleware
@@ -46,23 +57,51 @@ const createApp = () => {
   })
 }
 
-const startListening = () => {
-  // start listening (and create a 'server' object representing our server)
-  const server = app.listen(PORT, () =>
-    console.log(`Mixing it up on port ${PORT}`)
-  )
+const server = app.listen(PORT, () =>
+  console.log(`Mixing it up on port ${PORT}`)
+)
+const io = socketio(server)
+io.on('connection', socket => {
+  console.log(`A socket connection to the server has been made: ${socket.id}`)
 
-  // set up our socket control center
-  const io = socketio(server)
-  require('./socket')(io)
-}
+  socket.on('join', ({name, room}) => {
+    const {user} = addUser({id: socket.id, name, room})
+
+    socket.join(user.room)
+
+    socket.emit('message', {
+      text: `${user.name}, welcome to the ${user.room} room!`
+    })
+
+    socket.broadcast
+      .to(user.room)
+      .emit('message', {text: `${user.name} has joined!`})
+  })
+
+  socket.on('sendMessage', message => {
+    const user = getUser(socket.id)
+    io.to(user.room).emit('message', {user: user.name, text: message})
+    io
+      .to(user.room)
+      .emit('roomData', {room: user.room, users: getUsersInRoom(user.room)})
+  })
+
+  socket.on('disconnect', () => {
+    console.log(`Connection ${socket.id} has left the building`)
+    const user = removeUser(socket.id)
+    if (user) {
+      io
+        .to(user.room)
+        .emit('message', {user: 'admin', text: `${user.name} has left!`})
+    }
+  })
+})
 
 const syncDb = () => db.sync()
 
 async function bootApp() {
   await syncDb()
   await createApp()
-  await startListening()
 }
 // This evaluates as true when this file is run directly from the command line,
 // i.e. when we say 'node server/index.js' (or 'nodemon server/index.js', or 'nodemon server', etc)
