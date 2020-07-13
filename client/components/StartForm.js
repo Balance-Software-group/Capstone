@@ -7,7 +7,7 @@ import {Button, Form} from 'semantic-ui-react'
 /**
  * COMPONENT
  */
-const AuthForm = props => {
+const StartForm = props => {
   const {name, handleSubmit, error} = props
 
   return (
@@ -38,21 +38,12 @@ const AuthForm = props => {
   )
 }
 
-const mapStart = state => {
-  return {
-    name: 'Username',
-    displayName: 'Username',
-    error: state.user.error
-  }
+const mapState = state => {
+  return {}
 }
 
 const mapDispatch = dispatch => {
-  return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      const formName = evt.target.name
-    }
-  }
+  return {}
 }
 
-export const Start = connect(mapStart, mapDispatch)(AuthForm)
+export const Start = connect(mapState, mapDispatch)(StartForm)

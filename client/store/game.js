@@ -1,0 +1,399 @@
+import axios from 'axios'
+import history from '../history'
+
+/**
+ * ACTION TYPES
+ */
+const CREATED_PLAYER = 'CREATED_PLAYER'
+const STARTED_GAME = 'STARTED_GAME'
+const GUESSED_CORRECT = 'GUESSED_CORRECT'
+const GUESSED_WRONG = 'GUESSED_WRONG'
+const COUNTDOWN_COMPLETED = 'COUNTDOWN_COMPLETED'
+const SWITCHED_USER = 'SWITCHED_USER'
+const FINISHED_GAME = 'FINISHED_GAME'
+const WARNING = 'WARNING '
+
+/**
+ * ACTION CREATORS
+ */
+const createdPlayer = player => {
+  return {
+    type: CREATED_PLAYER,
+    player
+  }
+}
+
+const startedGame = () => {
+  return {
+    type: STARTED_GAME
+  }
+}
+
+const guessedCorrect = () => {
+  return {
+    type: GUESSED_CORRECT
+  }
+}
+
+const guessedWrong = () => {
+  return {
+    type: GUESSED_WRONG
+  }
+}
+
+const countdownCompleted = () => {
+  return {
+    type: STARTED_GAME
+  }
+}
+
+const switchedUser = () => {
+  return {
+    type: SWITCHED_USER
+  }
+}
+
+const finishedGame = () => {
+  return {
+    type: FINISHED_GAME
+  }
+}
+
+const warning = () => {
+  return {
+    type: WARNING
+  }
+}
+
+/**
+ * THUNK CREATORS
+ */
+
+export const createPlayer = userInfo => {
+  return async dispatch => {
+    try {
+      const response = await axios.post('/api/users', userInfo)
+      const player = response.data
+      dispatch(createdPlayer(player))
+    } catch (error) {
+      console.log('ERROR IN createUser THUNK --> ', error)
+    }
+  }
+}
+
+export const startGame = () => {
+  return async dispatch => {
+    //we want to check if there are at least two users
+    const state = store.getState()
+    if (state.playerList.length > 1) {
+      dispatch(startedGame)
+    } else {
+      dispatch(warning)
+    }
+  }
+}
+
+export const guessCorrect = playerGuess => {
+  return async dispatch => {
+    //first check to see if player guess is equal to the current prompt
+    const state = store.getState()
+    if (playerGuess === state.currentPrompt) {
+      dispatch(guessedCorrect)
+    } else {
+      dispatch(guessedWrong)
+    }
+  }
+}
+
+/**
+ * INITIAL STATE
+ */
+const defaultUser = {}
+
+const initialState = {
+  currentPlayer: '',
+  currentPrompt: '',
+  roomCode: '',
+  playerList: [
+    {
+      userName: '',
+      rounds: 0,
+      points: 0,
+      isDrawing: false
+    }
+  ],
+  drawing: false,
+  cleared: false,
+  rounds: 0,
+  winner: '',
+  prompts: [],
+  countdownComplete: false,
+  warrning: 'Invite another user to start the game!'
+}
+
+/**
+ * REDUCER
+ */
+export default function(state = defaultUser, action) {
+  switch (action.type) {
+    case CREATED_PLAYER:
+      const {player} = action.player
+      return {
+        ...state,
+        roomCode: player.gameCode,
+        playerList: [
+          ...state.playerList,
+          {username: player.users[players.users.length - 1].username}
+        ],
+        prompts: [...state.prompts, player.wordPrompts]
+      }
+    case STARTED_GAME:
+      const firstPlayer = state.playerList[0]
+      firstPlayer.rounds = 1
+      firstPlayer.isDrawing = true
+      return {
+        ...state,
+        currentPlayer: state.playerList[0],
+        currentPrompt: state.prompts[0],
+        //below we want to set player at 0th index's rounds to 1 and isDrawing to true
+        playerList: [firstPlayer, ...state.playerList.slice(1)],
+        rounds: state.rounds + 1
+      }
+    //in the case where there is not two users, warning will return default state and we will display warning message in the component
+    case WARNING:
+      return state
+    case GUESSED_CORRECT:
+      return {
+        ...state,
+        //we want to award 300 points to user that is not state.currentPlayer
+        playerList: playerList.map(player => {
+          if (player.userName !== state.currentPlayer) {
+            player.points += 300
+          }
+          return player
+        })
+      }
+
+    default:
+      return state
+  }
+}
+
+//CREATED_PLAYER DATA:
+// {
+//   "id": 1,
+//   "rounds": 1,
+//   "winner": null,
+//   "gameCode": "game1",
+//   "createdAt": "2020-07-12T23:50:46.170Z",
+//   "updatedAt": "2020-07-12T23:50:46.170Z",
+//   "users": [
+//       {
+//           "id": 3,
+//           "username": "bob",
+//           "createdAt": "2020-07-12T23:50:46.032Z",
+//           "updatedAt": "2020-07-12T23:50:46.032Z",
+//           "player": {
+//               "points": 0,
+//               "createdAt": "2020-07-12T23:50:46.245Z",
+//               "updatedAt": "2020-07-12T23:50:46.245Z",
+//               "userId": 3,
+//               "gameId": 1
+//           }
+//       }
+//   ],
+//   "wordPrompts": [
+//       {
+//           "id": 46,
+//           "name": "bucket",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 46
+//           }
+//       },
+//       {
+//           "id": 52,
+//           "name": "cake",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 52
+//           }
+//       },
+//       {
+//           "id": 53,
+//           "name": "calculator",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 53
+//           }
+//       },
+//       {
+//           "id": 54,
+//           "name": "calendar",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 54
+//           }
+//       },
+//       {
+//           "id": 57,
+//           "name": "camouflage",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 57
+//           }
+//       },
+//       {
+//           "id": 59,
+//           "name": "candle",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 59
+//           }
+//       },
+//       {
+//           "id": 60,
+//           "name": "cannon",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 60
+//           }
+//       },
+//       {
+//           "id": 64,
+//           "name": "castle",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 64
+//           }
+//       },
+//       {
+//           "id": 65,
+//           "name": "cat",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 65
+//           }
+//       },
+//       {
+//           "id": 66,
+//           "name": "ceiling fan",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 66
+//           }
+//       },
+//       {
+//           "id": 72,
+//           "name": "circle",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 72
+//           }
+//       },
+//       {
+//           "id": 77,
+//           "name": "compass",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 77
+//           }
+//       },
+//       {
+//           "id": 78,
+//           "name": "computer",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 78
+//           }
+//       },
+//       {
+//           "id": 79,
+//           "name": "cookie",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 79
+//           }
+//       },
+//       {
+//           "id": 130,
+//           "name": "giraffe",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 130
+//           }
+//       },
+//       {
+//           "id": 336,
+//           "name": "waterslide",
+//           "createdAt": "2020-07-12T23:50:34.182Z",
+//           "updatedAt": "2020-07-12T23:50:34.182Z",
+//           "gamePrompt": {
+//               "createdAt": "2020-07-12T23:50:46.457Z",
+//               "updatedAt": "2020-07-12T23:50:46.457Z",
+//               "gameId": 1,
+//               "wordPromptId": 336
+//           }
+//       }
+//   ]
+// }
