@@ -68,8 +68,6 @@ function Whiteboard() {
           setColor(color.hex)
         }}
       />
-      {console.log(typeof color)}
-      {/* html canvas element rendered with 3 event listeners and a ref in order to keep track of and work with this element inside react component*/}
       <canvas
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}

@@ -2,14 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 // import PropTypes from 'prop-types'
-import {
-  Home,
-  Start,
-  UserHome,
-  Instructions,
-  GameRoom,
-  ChatBox
-} from './components'
+import {Home, Start, UserHome, Instructions, GameRoom} from './components'
 
 // import {me} from './store'
 
@@ -30,8 +23,7 @@ class Routes extends Component {
         <Route path="/start" component={Start} />
         <Route exact path="/" component={Home} />
         <Route exact path="/instructions" component={Instructions} />
-        <Route exact path="/game" component={GameRoom} />
-        <Route path="/chat" component={ChatBox} />
+        <Route path="/game" component={GameRoom} />
 
         {isLoggedIn && (
           <Switch>
