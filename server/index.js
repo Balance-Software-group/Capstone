@@ -86,6 +86,10 @@ io.on('connection', socket => {
       .emit('roomData', {room: user.room, users: getUsersInRoom(user.room)})
   })
 
+  socket.on('drawing', data => {
+    socket.broadcast.emit('drawing', data)
+  })
+
   socket.on('disconnect', () => {
     console.log(`Connection ${socket.id} has left the building`)
     const user = removeUser(socket.id)
