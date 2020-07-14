@@ -43,7 +43,7 @@ const guessedWrong = () => {
 
 const countdownCompleted = () => {
   return {
-    type: STARTED_GAME
+    type: COUNTDOWN_COMPLETED
   }
 }
 
@@ -134,7 +134,7 @@ const initialState = {
 /**
  * REDUCER
  */
-export default function(state = defaultUser, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case CREATED_PLAYER:
       const {player} = action.player
