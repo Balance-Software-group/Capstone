@@ -38,7 +38,8 @@ const AuthForm = props => {
         <div>
           <Link
             onClick={e => (!name || !room ? e.preventDefault() : null)}
-            to={`/chat?name=${name}&room=${room}`}
+            to={`/game?name=${name}&room=${room}`}
+            // to="/game"
           >
             <Button basic color="black" type="submit">
               Start Game
