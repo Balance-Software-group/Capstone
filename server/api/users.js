@@ -43,53 +43,50 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-//troubleshooting: get works to update, but post gives a allowNull violation on the user.username
-//and user object doesnt show the updated points on state
-//also adding points requires parseInt, otherwise 0+ x = 0x instead of x
-router.get('/', async (req, res, next) => {
+//updates a users points on the player table and sends back the eager-loaded user
+router.put('/', async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.body.id, {
-      include: [
-        {
-          model: Game,
-          as: Player,
-          required: true
-        }
-      ]
-    })
-    // console.log(user)
-    // let player = user.games[0].player
-    // console.log(player)
+    let {userId, points} = req.body
+    //converting points into type integer
+    points = parseInt(points, 10)
 
-    // if(player.points){
-    //   console.log('HELLOOOO')
-    //   player.points +=req.body.points
-    // }
-    //res.json(user)
-
-    // if(user){
-    //   const [numAffectedRows, affectedRows] = await Player.update({
-    //     points: this.points+=req.body.points
-    //   },{
-    //     where: {
-    //       userId: user.id
-    //     },
-    //     returning: true,
-    //     plain: true
-    //   })
-    //   res.json(affectedRows)
-    // }else{
-    //   res.sendStatus(404)
-    // }
+    //finding the player associated with the userId
     const player = await Player.findOne({
       where: {
-        userId: user.id
+        userId: userId
       }
     })
 
-    player.points += req.body.points
+    //if the player exists, add to its existing points
+    if (player) {
+      await Player.update(
+        {
+          points: parseInt(player.points, 10) + points
+        },
+        {
+          where: {
+            userId: userId
+          },
+          returning: true,
+          plain: true
+        }
+      )
 
-    res.json(user)
+      //find the user on the updated player, and send it back eager loaded
+      const updatedUser = await User.findByPk(userId, {
+        include: [
+          {
+            model: Game,
+            as: Player,
+            required: true
+          }
+        ]
+      })
+
+      res.json(updatedUser)
+    } else {
+      res.sendStatus(404)
+    }
   } catch (error) {
     next(error)
   }
