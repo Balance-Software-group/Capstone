@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
-import {Whiteboard} from '../components'
+import {Whiteboard} from '.'
 let socket
 
 // import {Button, Comment, Form, Header} from 'semantic-ui-react'
@@ -10,7 +10,7 @@ import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
 
-export const ChatBox = ({location}) => {
+export const GameRoom = ({location}) => {
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
   const [users, setUsers] = useState('')
@@ -73,7 +73,7 @@ export const ChatBox = ({location}) => {
   )
 }
 
-export default ChatBox
+export default GameRoom
 
 //Semantic UI div
 /*<div>
