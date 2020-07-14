@@ -50,11 +50,16 @@ router.post('/', async (req, res, next) => {
 
       res.json(eagerLoadedGame)
     } else {
-      //adds user to the game if the game is already in existance
-      //issues with returning this added user below
-      await game[0].addUser(user)
-      const createdGame = game
-      res.json(createdGame)
+      //adds user to the game if the game is already in existance && the game currently only has one player on it
+      if (game[0].users.length < 2) {
+        await game[0].addUser(user)
+        //BUG: second user not being sent back, but appears in db
+        console.log('GAME USERS:', game[0].users)
+        const createdGame = game[0]
+        res.json(createdGame)
+      }
+      //send Bad Request status if there are already 2 users on the game
+      res.sendStatus(400)
     }
   } catch (err) {
     next(err)
