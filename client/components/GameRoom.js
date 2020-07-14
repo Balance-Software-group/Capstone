@@ -49,8 +49,6 @@ export const GameRoom = ({location}) => {
     }
   }
 
-  console.log(message, messages)
-
   return (
     <div>
       <div>
