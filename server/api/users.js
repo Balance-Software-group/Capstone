@@ -53,10 +53,13 @@ router.post('/', async (req, res, next) => {
       //adds user to the game if the game is already in existance && the game currently only has one player on it
       if (game[0].users.length < 2) {
         await game[0].addUser(user)
-        //BUG: second user not being sent back, but appears in db
-        console.log('GAME USERS:', game[0].users)
-        const createdGame = game[0]
-        res.json(createdGame)
+
+        //find the game again to send it back
+        const updatedGame = await Game.findByPk(game[0].id, {
+          include: [User, WordPrompt]
+        })
+
+        res.json(updatedGame)
       }
       //send Bad Request status if there are already 2 users on the game
       res.sendStatus(400)
