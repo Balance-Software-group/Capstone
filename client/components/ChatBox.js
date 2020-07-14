@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
+import {Whiteboard} from '../components'
 let socket
 
 // import {Button, Comment, Form, Header} from 'semantic-ui-react'
@@ -65,6 +66,9 @@ export const ChatBox = ({location}) => {
         />
       </div>
       <TextContainer users={users} />
+      <div>
+        <Whiteboard />
+      </div>
     </div>
   )
 }
@@ -79,7 +83,7 @@ export default ChatBox
         </Header>
         <Form>
           <Form.TextArea>
-            {/* <Form.Input 
+            {/* <Form.Input
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} /> */
 // </Form.TextArea>
