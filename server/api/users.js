@@ -3,6 +3,24 @@ const {User, Game, WordPrompt, Player} = require('../db/models')
 
 module.exports = router
 
+//gets an eager-loaded user
+router.get('/', async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.body.id, {
+      include: [
+        {
+          model: Game,
+          as: Player,
+          required: true
+        }
+      ]
+    })
+    res.json(user)
+  } catch (error) {
+    next(error)
+  }
+})
+
 //creates a new user, finds or creates a game for the user, assigns prompts to the new game
 router.post('/', async (req, res, next) => {
   try {
