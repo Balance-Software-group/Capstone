@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
-import {Whiteboard} from '.'
+import {Whiteboard, Timer} from '../components'
 let socket
 
 // import {Button, Comment, Form, Header} from 'semantic-ui-react'
@@ -65,6 +65,7 @@ export const GameRoom = ({location}) => {
       </div>
       <TextContainer users={users} />
       <div>
+        <Timer />
         <Whiteboard />
       </div>
     </div>
