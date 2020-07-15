@@ -18,6 +18,7 @@ export const GameRoom = ({location}) => {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
   const [drawing, setDrawing] = useState({})
+  const [drawings, setDrawings] = useState([])
   const ENDPOINT = window.location.origin
 
   useEffect(
@@ -36,6 +37,7 @@ export const GameRoom = ({location}) => {
 
   useEffect(() => {
     socket.on('message', message => {
+      console.log('THIS IS MESSSAAAAGFGGGEESSSS', message)
       setMessages(messages => [...messages, message])
     })
     // socket.on('roomData', ({users}) => {
@@ -44,9 +46,13 @@ export const GameRoom = ({location}) => {
   }, [])
 
   useEffect(() => {
-    socket.on('draw', drawing => {
-      console.log('I AM DRAWING FRONTENDDDDDDDD !!!!!!', drawing)
-      socket.emit('drawing', drawing)
+    socket.on('drawing', drawing => {
+      console.log(
+        '%c DRAWING USE EFFECT!',
+        'color: green; font-weight: bold;',
+        drawing
+      )
+      setDrawings(drawings => [...drawings, drawing])
     })
   }, [])
 
@@ -54,6 +60,12 @@ export const GameRoom = ({location}) => {
     e.preventDefault()
     if (message) {
       socket.emit('sendMessage', message, () => setMessage(''))
+    }
+  }
+
+  const sendDrawing = e => {
+    if (drawing) {
+      socket.emit('draw', drawing)
     }
   }
 
@@ -73,7 +85,12 @@ export const GameRoom = ({location}) => {
       </div>
       <TextContainer users={users} />
       <div>
-        <Whiteboard drawing={drawing} setDrawing={setDrawing} />
+        <Whiteboard
+          drawing={drawing}
+          setDrawing={setDrawing}
+          sendDrawing={sendDrawing}
+          drawings={drawings}
+        />
       </div>
     </div>
   )

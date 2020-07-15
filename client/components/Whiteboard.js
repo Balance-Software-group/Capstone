@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useState} from 'react'
 import {SketchPicker} from 'react-color'
 
-function Whiteboard({drawing, setDrawing}) {
+function Whiteboard({drawing, drawings, setDrawing, sendDrawing}) {
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
   const [isDrawing, setIsDrawing] = useState(false)
@@ -46,9 +46,12 @@ function Whiteboard({drawing, setDrawing}) {
     const {offsetX, offsetY} = nativeEvent
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
-    console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
-    drawing = {offsetX, offsetY}
-    console.log('THIS IS DRAWINGGG', drawing)
+
+    drawing = {x: offsetX, y: offsetY}
+    console.log('THIS IS DRAWINGGGGG SINGULAR', drawing)
+    drawings.push(drawing)
+    console.log('THIS IS DRAWINGGGSSSS', drawings)
+    sendDrawing()
   }
 
   return (
@@ -64,8 +67,8 @@ function Whiteboard({drawing, setDrawing}) {
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
         onMouseMove={draw}
-        // value={{drawing}}
-        // onChange={({target: {value}}) => draw(value)}
+        value={drawing}
+        onChange={({target: {value}}) => setDrawing(value)}
         ref={canvasRef}
       />
     </div>
