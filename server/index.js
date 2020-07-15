@@ -88,10 +88,10 @@ io.on('connection', socket => {
 
   socket.on('draw', data => {
     const user = getUser(socket.id)
-    console.log('THIS IS BACKEND DRAWING CONNECTION!!!!!!!!!!')
+    console.log('THIS IS DRAWING COORDINATES', data)
     socket.to(user.room).emit('drawing', data)
 
-    // socket.broadcast.emit('drawing', drawing)
+    // socket.broadcast.emit('drawing', data)
   })
 
   socket.on('disconnect', () => {

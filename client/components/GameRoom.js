@@ -17,7 +17,7 @@ export const GameRoom = ({location}) => {
   const [users, setUsers] = useState('')
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
-  const [drawing, setDrawing] = useState({})
+  const [drawing, setDrawing] = useState('')
   const [drawings, setDrawings] = useState([])
   const ENDPOINT = window.location.origin
 
@@ -37,7 +37,6 @@ export const GameRoom = ({location}) => {
 
   useEffect(() => {
     socket.on('message', message => {
-      console.log('THIS IS MESSSAAAAGFGGGEESSSS', message)
       setMessages(messages => [...messages, message])
     })
     // socket.on('roomData', ({users}) => {
@@ -47,12 +46,8 @@ export const GameRoom = ({location}) => {
 
   useEffect(() => {
     socket.on('drawing', drawing => {
-      console.log(
-        '%c DRAWING USE EFFECT!',
-        'color: green; font-weight: bold;',
-        drawing
-      )
-      setDrawings(drawings => [...drawings, drawing])
+      drawing = data
+      console.log('%c DRAWING USE EFFECT!', 'color: green; font-weight: bold;')
     })
   }, [])
 
@@ -63,9 +58,10 @@ export const GameRoom = ({location}) => {
     }
   }
 
-  const sendDrawing = e => {
+  const sendDrawing = drawing => {
+    // e.preventDefault()
     if (drawing) {
-      socket.emit('draw', drawing)
+      socket.emit('draw', data)
     }
   }
 

@@ -47,11 +47,11 @@ function Whiteboard({drawing, drawings, setDrawing, sendDrawing}) {
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
 
-    drawing = {x: offsetX, y: offsetY}
-    console.log('THIS IS DRAWINGGGGG SINGULAR', drawing)
-    drawings.push(drawing)
-    console.log('THIS IS DRAWINGGGSSSS', drawings)
-    sendDrawing()
+    let data = {x: offsetX, y: offsetY}
+    console.log('THIS IS DRAWINGGGGG SINGULAR', data)
+    // drawings.push(drawing)
+    // console.log('THIS IS DRAWINGGGSSSS', drawings)
+    sendDrawing(data)
   }
 
   return (
@@ -67,8 +67,8 @@ function Whiteboard({drawing, drawings, setDrawing, sendDrawing}) {
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
         onMouseMove={draw}
-        value={drawing}
-        onChange={({target: {value}}) => setDrawing(value)}
+        // value={drawings}
+        // onChange={({target: {value}}) => sendDrawing(value)}
         ref={canvasRef}
       />
     </div>
