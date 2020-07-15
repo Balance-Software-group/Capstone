@@ -2,14 +2,19 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
 class UserDashboard extends Component {
+  constructor() {
+    super()
+  }
+
   render() {
     return (
       <div>
         <h1>Hello world</h1>
+        {console.log(this.props.players)}
         {/* {
-                    // this.props.players.map(player => {
+                    this.props.players.map(player => {
                         return (
-                            <div> 
+                            <div key={player.username}>
                                 <h2>{player.username}</h2>
                                 <h3>{player.points}</h3>
                             </div>
@@ -23,7 +28,7 @@ class UserDashboard extends Component {
 
 const mapState = state => {
   return {
-    players: state.playerList
+    players: state.playerReducer
   }
 }
 

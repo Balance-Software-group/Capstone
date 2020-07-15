@@ -24,6 +24,7 @@ router.get('/', async (req, res, next) => {
 //creates a new user, finds or creates a game for the user, assigns prompts to the new game
 router.post('/', async (req, res, next) => {
   try {
+    console.log('THIS IS REQ.BODY', req.body)
     const username = req.body.username
     const gameCode = req.body.gameCode
     // creates a new user

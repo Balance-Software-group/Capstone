@@ -68,11 +68,9 @@ const warning = () => {
  * THUNK CREATORS
  */
 export const createPlayer = userInfo => {
-  console.log('USERINFO IN CREATEPLAYER THUNK', userInfo)
   return async dispatch => {
     try {
       const response = await axios.post('/api/users', userInfo)
-      console.log('RESPONSE IN CREATEPLAYER THUNK', response)
       const player = response.data
       dispatch(createdPlayer(player))
     } catch (error) {
@@ -122,13 +120,7 @@ const gameInitialState = {
 
 const playerInitialState = {
   currentPlayer: '',
-  playerList: [
-    {
-      username: '',
-      // rounds: 0,
-      points: 0
-    }
-  ]
+  playerList: []
 }
 
 /**
@@ -163,10 +155,15 @@ export const playerReducer = function(state = playerInitialState, action) {
       // const {player} = action.player
       return {
         ...state,
+        // playerList: [
+        //   ...state.playerList,
+        //   {username: action.player.users[0].username}
+        // ],
         playerList: [
           ...state.playerList,
-          {username: action.player.users[0].username}
+          {username: action.player.users[0].username, points: 30}
         ]
+        // currentPlayer: 'whataaataa'
       }
     case STARTED_GAME:
       const firstPlayer = state.playerList[0]

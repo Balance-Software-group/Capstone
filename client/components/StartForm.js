@@ -1,24 +1,19 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {createPlayer} from '../store'
 import {Button, Form} from 'semantic-ui-react'
+import history from '../history'
 
-/**
- * COMPONENT
- */
 const StartForm = props => {
-  console.log('PROOOPS', props)
   const {handleSubmit} = props
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
 
   return (
-    // <form onSubmit={createPlayer({username: event.target.username.value, gameCode: event.target.gameCode.value })}>
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <div>
-        <div>
+        <Form.Field>
           <label>
             <small>Enter Username</small>
           </label>
@@ -27,8 +22,8 @@ const StartForm = props => {
             type="text"
             onChange={e => setName(e.target.value)}
           />
-        </div>
-        <div>
+        </Form.Field>
+        <Form.Field>
           <label>
             <small>Enter Game name</small>
           </label>
@@ -37,43 +32,37 @@ const StartForm = props => {
             type="text"
             onChange={e => setRoom(e.target.value)}
           />
-        </div>
+        </Form.Field>
         <div>
-          {/* <Link
-            onClick={e => (!name || !room ? e.preventDefault() : null)}
-            to={`/game?name=${name}&room=${room}`}
-            // to="/game"
-          > */}
           <Button basic color="black" type="submit">
             Start Game
           </Button>
-          {/* </Link> */}
         </div>
       </div>
-    </form>
+    </Form>
   )
 }
 
-// const mapState = state => {
-//   return {}
-// }
-
-const mapDispatch = dispatch => {
-  console.log('MAP DISPATCH IS RUNNING!')
+const mapState = state => {
   return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      console.log('USERNAME!!!!!', evt)
-      const username = evt.target.username.value
-      const gameCode = evt.target.gameCode.value
-      dispatch(createPlayer({username, gameCode}))
-    }
-    // createPlayer: (userInfo) => dispatch(createPlayer(userInfo))
+    players: state.playerReducer.playerList
   }
 }
 
-// StartForm.propTypes = {
-//   handleSubmit: PropTypes.func.isRequired,
-// }
+const mapDispatch = dispatch => {
+  return {
+    async handleSubmit(evt) {
+      evt.preventDefault()
+      const username = evt.target.username.value
+      const gameCode = evt.target.gameCode.value
+      await dispatch(createPlayer({username, gameCode}))
+      history.push(`/game?name=${username}&room=${gameCode}`)
+    }
+  }
+}
 
-export const Start = connect(null, mapDispatch)(StartForm)
+StartForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired
+}
+
+export const Start = connect(mapState, mapDispatch)(StartForm)
