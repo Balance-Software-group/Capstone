@@ -4,10 +4,10 @@
  * having to figure out which file they belong to!
  */
 export {default as Navbar} from './Navbar'
-export {default as UserHome} from './UserHome'
-// export {Login, Signup} from './AuthForm' --> commented out when refactoring boilerplate files which implicates user/username
 export {Start} from './StartForm'
 export {default as Whiteboard} from './Whiteboard'
 export {default as Home} from './Home'
 export {default as Instructions} from './Instructions'
 export {default as GameRoom} from './GameRoom'
+export {default as Timer} from './Timer'
+export {default as UserDashboard} from './UserDashboard'

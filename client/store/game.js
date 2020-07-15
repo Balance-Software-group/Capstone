@@ -1,5 +1,4 @@
 import axios from 'axios'
-import history from '../history'
 
 /**
  * ACTION TYPES
@@ -68,15 +67,16 @@ const warning = () => {
 /**
  * THUNK CREATORS
  */
-
 export const createPlayer = userInfo => {
+  console.log('USERINFO IN CREATEPLAYER THUNK', userInfo)
   return async dispatch => {
     try {
       const response = await axios.post('/api/users', userInfo)
+      console.log('RESPONSE IN CREATEPLAYER THUNK', response)
       const player = response.data
       dispatch(createdPlayer(player))
     } catch (error) {
-      console.log('ERROR IN createUser THUNK --> ', error)
+      console.log('ERROR IN createPlayer THUNK --> ', error)
     }
   }
 }
@@ -108,20 +108,9 @@ export const guessCorrect = playerGuess => {
 /**
  * INITIAL STATE
  */
-const defaultUser = {}
-
-const initialState = {
-  currentPlayer: '',
+const gameInitialState = {
   currentPrompt: '',
   roomCode: '',
-  playerList: [
-    {
-      userName: '',
-      rounds: 0,
-      points: 0,
-      isDrawing: false
-    }
-  ],
   drawing: false,
   cleared: false,
   rounds: 0,
@@ -131,37 +120,62 @@ const initialState = {
   warrning: 'Invite another user to start the game!'
 }
 
+const playerInitialState = {
+  currentPlayer: '',
+  playerList: [
+    {
+      username: '',
+      // rounds: 0,
+      points: 0
+    }
+  ]
+}
+
 /**
  * REDUCER
  */
-export default function(state = initialState, action) {
+export const gameReducer = function(state = gameInitialState, action) {
   switch (action.type) {
     case CREATED_PLAYER:
-      const {player} = action.player
+      // const {player} = action.player
       return {
         ...state,
-        roomCode: player.gameCode,
-        playerList: [
-          ...state.playerList,
-          {username: player.users[players.users.length - 1].username}
-        ],
-        prompts: [...state.prompts, player.wordPrompts]
+        roomCode: action.player.gameCode,
+        prompts: [...state.prompts, action.player.wordPrompts]
       }
     case STARTED_GAME:
-      const firstPlayer = state.playerList[0]
-      firstPlayer.rounds = 1
-      firstPlayer.isDrawing = true
       return {
         ...state,
-        currentPlayer: state.playerList[0],
         currentPrompt: state.prompts[0],
-        //below we want to set player at 0th index's rounds to 1 and isDrawing to true
-        playerList: [firstPlayer, ...state.playerList.slice(1)],
         rounds: state.rounds + 1
       }
     //in the case where there is not two users, warning will return default state and we will display warning message in the component
     case WARNING:
       return state
+    default:
+      return state
+  }
+}
+
+export const playerReducer = function(state = playerInitialState, action) {
+  switch (action.type) {
+    case CREATED_PLAYER:
+      // const {player} = action.player
+      return {
+        ...state,
+        playerList: [
+          ...state.playerList,
+          {username: action.player.users[0].username}
+        ]
+      }
+    case STARTED_GAME:
+      const firstPlayer = state.playerList[0]
+      firstPlayer.rounds = 1
+      return {
+        ...state,
+        currentPlayer: state.playerList[0],
+        playerList: [firstPlayer, ...state.playerList.slice(1)]
+      }
     case GUESSED_CORRECT:
       return {
         ...state,

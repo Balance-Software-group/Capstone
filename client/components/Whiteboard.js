@@ -56,7 +56,7 @@ function Whiteboard() {
           setColor(color.hex)
         }}
       />
-      {console.log(typeof color)}
+
       <canvas
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}

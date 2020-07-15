@@ -12,7 +12,6 @@ function convertWordPrompts(jsonArr) {
     const name = jsonArr[i].name
     convertedWordPrompts.push({name})
   }
-  console.log(convertedWordPrompts)
   return convertedWordPrompts
 }
 
