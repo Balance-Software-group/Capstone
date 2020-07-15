@@ -59,9 +59,8 @@ export const GameRoom = ({location}) => {
   }
 
   const sendDrawing = drawing => {
-    // e.preventDefault()
     if (drawing) {
-      socket.emit('draw', data)
+      socket.emit('draw', drawing)
     }
   }
 
