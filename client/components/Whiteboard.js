@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useState} from 'react'
 import {SketchPicker} from 'react-color'
 
-function Whiteboard() {
+function Whiteboard({drawing, setDrawing}) {
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
   const [isDrawing, setIsDrawing] = useState(false)
@@ -47,6 +47,8 @@ function Whiteboard() {
     contextRef.current.stroke()
   }
 
+  console.log('THIS IS DRAWING FROM WHITEBOARDDDDD!!!!!!', drawing)
+
   return (
     <div>
       <SketchPicker
@@ -60,6 +62,7 @@ function Whiteboard() {
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
         onMouseMove={draw}
+        onChange={({target: {drawing}}) => draw(drawing)}
         ref={canvasRef}
       />
     </div>

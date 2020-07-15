@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import queryString from 'query-string'
 import io from 'socket.io-client'
-import {Whiteboard} from '.'
+
 let socket
 
 // import {Button, Comment, Form, Header} from 'semantic-ui-react'
@@ -9,6 +9,7 @@ let socket
 import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
+import Whiteboard from './Whiteboard'
 
 export const GameRoom = ({location}) => {
   const [name, setName] = useState('')
@@ -16,8 +17,8 @@ export const GameRoom = ({location}) => {
   const [users, setUsers] = useState('')
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
+  const [drawing, setDrawing] = useState({})
   const ENDPOINT = window.location.origin
-  //UPDATE: when we make the rooms live
 
   useEffect(
     () => {
@@ -40,6 +41,14 @@ export const GameRoom = ({location}) => {
     // socket.on('roomData', ({users}) => {
     //   setUsers(users)
     // })
+  }, [])
+
+  useEffect(() => {
+    socket.on('drawing', drawing => {
+      console.log('I AM DRAWING FRONTENDDDDDDDD !!!!!!', drawing)
+      socket.emit('drawing', drawing)
+      // setDrawing(drawing)
+    })
   }, [])
 
   const sendMessage = e => {
@@ -65,7 +74,7 @@ export const GameRoom = ({location}) => {
       </div>
       <TextContainer users={users} />
       <div>
-        <Whiteboard />
+        <Whiteboard drawing={drawing} setDrawing={setDrawing} />
       </div>
     </div>
   )

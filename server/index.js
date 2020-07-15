@@ -86,8 +86,12 @@ io.on('connection', socket => {
       .emit('roomData', {room: user.room, users: getUsersInRoom(user.room)})
   })
 
-  socket.on('drawing', data => {
-    socket.broadcast.emit('drawing', data)
+  socket.on('draw', data => {
+    const user = getUser(socket.id)
+    console.log('THIS IS BACKEND DRAWING CONNECTION!!!!!!!!!!')
+    socket.to(user.room).emit('drawing', data)
+
+    // socket.broadcast.emit('drawing', drawing)
   })
 
   socket.on('disconnect', () => {
