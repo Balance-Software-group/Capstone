@@ -44,10 +44,9 @@ export const GameRoom = ({location}) => {
   }, [])
 
   useEffect(() => {
-    socket.on('drawing', drawing => {
+    socket.on('draw', drawing => {
       console.log('I AM DRAWING FRONTENDDDDDDDD !!!!!!', drawing)
       socket.emit('drawing', drawing)
-      // setDrawing(drawing)
     })
   }, [])
 

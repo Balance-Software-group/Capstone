@@ -31,6 +31,7 @@ function Whiteboard({drawing, setDrawing}) {
     context.strokeStyle = color
 
     setIsDrawing(true)
+    // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
   }
 
   const finishDrawing = () => {
@@ -45,9 +46,10 @@ function Whiteboard({drawing, setDrawing}) {
     const {offsetX, offsetY} = nativeEvent
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
+    console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
+    drawing = {offsetX, offsetY}
+    console.log('THIS IS DRAWINGGG', drawing)
   }
-
-  console.log('THIS IS DRAWING FROM WHITEBOARDDDDD!!!!!!', drawing)
 
   return (
     <div>
@@ -62,7 +64,8 @@ function Whiteboard({drawing, setDrawing}) {
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
         onMouseMove={draw}
-        onChange={({target: {drawing}}) => draw(drawing)}
+        // value={{drawing}}
+        // onChange={({target: {value}}) => draw(value)}
         ref={canvasRef}
       />
     </div>
