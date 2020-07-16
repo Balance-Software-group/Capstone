@@ -124,6 +124,9 @@ export const GameRoom = ({location}) => {
 
   const draw = ({nativeEvent}) => {
     if (!isDrawing) {
+      console.log('WE ARE NOT DRAWING')
+      setDrawing('')
+      setDrawings([])
       return
     }
     const {offsetX, offsetY} = nativeEvent
@@ -135,6 +138,8 @@ export const GameRoom = ({location}) => {
     drawings.push(drawing)
     console.log('THIS IS DRAWINGGGSSSS', drawings)
     sendDrawing(drawings)
+    setDrawing('')
+    setDrawings([])
   }
 
   return (
