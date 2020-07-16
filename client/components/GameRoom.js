@@ -54,15 +54,27 @@ export const GameRoom = ({location}) => {
   useEffect(() => {
     socket.on('drawing', drawings => {
       console.log('THIS IS DRAWINGGGG IN SOCKETTTT', drawings)
-      // // draw(drawings)
-      // const draw = drawings => {
-      //   drawings.map(drawing => contextRef.current.lineTo(drawing.x, drawing.y))
-      // }
-      // contextRef.current.stroke()
+
+      //startDrawing function
+      // contextRef.current.beginPath()
+
+      // drawings.map(drawing => {
+      //   contextRef.current.moveTo(drawing.x, drawing.y)
+      // })
+      // const context = canvasRef.current.getContext('2d')
+      // context.strokeStyle = color
+
+      //draw function
       drawings.map(drawing => {
         contextRef.current.lineTo(drawing.x, drawing.y)
       })
       contextRef.current.stroke()
+      // finishDrawing function
+      // contextRef.current.closePath()
+      setDrawing('')
+      setDrawings([])
+      setIsDrawing(false)
+      console.log('THIS IS SET IS DRAWINGGGGG', isDrawing)
 
       // draw(drawings)
       // console.log('%c DRAWING USE EFFECT!', 'color: green; font-weight: bold;', drawings)
@@ -98,7 +110,7 @@ export const GameRoom = ({location}) => {
     }
   }
 
-  //whiteboard helper function
+  // whiteboard helper function
   const startDrawing = ({nativeEvent}) => {
     const {offsetX, offsetY} = nativeEvent
     contextRef.current.beginPath()
@@ -109,24 +121,30 @@ export const GameRoom = ({location}) => {
 
     setIsDrawing(true)
 
-    // setDrawing({x: offsetX, y: offsetY})
-    // console.log('THIS IS DRAWING IN STARTDRAWING FUNCTION', drawing)
-    // // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
-    // let data = {x: offsetX, y: offsetY}
-    // // console.log('THIS IS DATA!!!!!!!', data)
-    // sendDrawing(data)
+    setDrawing({x: offsetX, y: offsetY})
+    console.log('THIS IS DRAWING IN STARTDRAWING FUNCTION', drawing)
+    // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
+    let data = {x: offsetX, y: offsetY}
+    // console.log('THIS IS DATA!!!!!!!', data)
+    sendDrawing(data)
+    setDrawing('')
+    setDrawings([])
+    sendDrawing([{}])
   }
 
   const finishDrawing = () => {
     contextRef.current.closePath()
+    setDrawing('')
+    setDrawings([])
     setIsDrawing(false)
+    console.log('FINISH DRAWING IS DONEEEEEEE')
   }
 
   const draw = ({nativeEvent}) => {
     if (!isDrawing) {
       console.log('WE ARE NOT DRAWING')
-      setDrawing('')
-      setDrawings([])
+      // setDrawing('')
+      // setDrawings([])
       return
     }
     const {offsetX, offsetY} = nativeEvent
