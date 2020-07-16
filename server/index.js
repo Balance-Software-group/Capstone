@@ -86,10 +86,10 @@ io.on('connection', socket => {
       .emit('roomData', {room: user.room, users: getUsersInRoom(user.room)})
   })
 
-  socket.on('draw', data => {
+  socket.on('draw', drawing => {
     const user = getUser(socket.id)
-    console.log('THIS IS DRAWING COORDINATES', data)
-    socket.to(user.room).emit('drawing', data)
+    console.log('THIS IS DRAWING COORDINATES', drawing)
+    socket.to(user.room).emit('drawing', drawing)
 
     // socket.broadcast.emit('drawing', data)
   })

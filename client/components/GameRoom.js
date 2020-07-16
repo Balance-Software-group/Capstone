@@ -53,11 +53,12 @@ export const GameRoom = ({location}) => {
 
   useEffect(() => {
     socket.on('drawing', drawings => {
-      // draw(drawings)
-      const draw = drawings => {
-        drawings.map(drawing => contextRef.current.lineTo(drawing.x, drawing.y))
-      }
-      contextRef.current.stroke()
+      console.log('THIS IS DRAWINGGGG IN SOCKETTTT', drawings)
+      // // draw(drawings)
+      // const draw = drawings => {
+      //   drawings.map(drawing => contextRef.current.lineTo(drawing.x, drawing.y))
+      // }
+      // contextRef.current.stroke()
       draw(drawings)
       // console.log('%c DRAWING USE EFFECT!', 'color: green; font-weight: bold;', drawings)
     })
@@ -102,10 +103,10 @@ export const GameRoom = ({location}) => {
     context.strokeStyle = color
 
     setIsDrawing(true)
-    // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
-    let data = {x: offsetX, y: offsetY}
-    // console.log('THIS IS DATA!!!!!!!', data)
-    sendDrawing(data)
+    // // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
+    // let data = {x: offsetX, y: offsetY}
+    // // console.log('THIS IS DATA!!!!!!!', data)
+    // sendDrawing(data)
   }
 
   const finishDrawing = () => {
@@ -121,11 +122,11 @@ export const GameRoom = ({location}) => {
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
 
-    // let data = {x: offsetX, y: offsetY}
-    // console.log('THIS IS DRAWINGGGGG SINGULAR', data)
-    // drawings.push(drawing)
-    // console.log('THIS IS DRAWINGGGSSSS', drawings)
-    // sendDrawing(data)
+    let drawing = {x: offsetX, y: offsetY}
+    console.log('THIS IS DRAWINGGGGG SINGULAR', drawing)
+    drawings.push(drawing)
+    console.log('THIS IS DRAWINGGGSSSS', drawings)
+    sendDrawing(drawings)
   }
 
   return (
