@@ -59,7 +59,12 @@ export const GameRoom = ({location}) => {
       //   drawings.map(drawing => contextRef.current.lineTo(drawing.x, drawing.y))
       // }
       // contextRef.current.stroke()
-      draw(drawings)
+      drawings.map(drawing => {
+        contextRef.current.lineTo(drawing.x, drawing.y)
+      })
+      contextRef.current.stroke()
+
+      // draw(drawings)
       // console.log('%c DRAWING USE EFFECT!', 'color: green; font-weight: bold;', drawings)
     })
   }, [])
@@ -87,9 +92,9 @@ export const GameRoom = ({location}) => {
     }
   }
 
-  const sendDrawing = drawing => {
-    if (drawing) {
-      socket.emit('draw', drawing)
+  const sendDrawing = drawings => {
+    if (drawings) {
+      socket.emit('draw', drawings)
     }
   }
 
@@ -103,6 +108,9 @@ export const GameRoom = ({location}) => {
     context.strokeStyle = color
 
     setIsDrawing(true)
+
+    // setDrawing({x: offsetX, y: offsetY})
+    // console.log('THIS IS DRAWING IN STARTDRAWING FUNCTION', drawing)
     // // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
     // let data = {x: offsetX, y: offsetY}
     // // console.log('THIS IS DATA!!!!!!!', data)
