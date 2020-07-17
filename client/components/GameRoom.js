@@ -60,16 +60,17 @@ export const GameRoom = ({location}) => {
       const context = canvasRef.current.getContext('2d')
       context.strokeStyle = thisdrawings.color
       if (thisdrawings) {
-        thisdrawings.map(point => {
-          contextRef.current.lineTo(point.x, point.y)
+        // thisdrawings.map(point => {
+        //   contextRef.current.lineTo(point.x, point.y)
+        contextRef.current.lineTo(thisdrawings.x, thisdrawings.y)
+        contextRef.current.stroke()
 
-          contextRef.current.stroke()
-
-          // contextRef.current.closePath()
-          setDrawing('')
-          setDrawings([])
-          setIsDrawing(false)
-        })
+        // contextRef.current.closePath()
+        setDrawing('')
+        setDrawings([])
+        setIsDrawing(false)
+        // }
+        // )
 
         // console.log('THIS IS SET IS DRAWINGGGGG', isDrawing)
       }
@@ -103,7 +104,7 @@ export const GameRoom = ({location}) => {
   }
 
   const sendDrawing = theDrawings => {
-    if (drawings) {
+    if (drawing) {
       const context = canvasRef.current.getContext('2d')
       context.strokeStyle = color
       socket.emit('draw', theDrawings)
@@ -174,13 +175,19 @@ export const GameRoom = ({location}) => {
 
       const context = canvasRef.current.getContext('2d')
       context.strokeStyle = color
+      setDrawing({offsetX, offsetY, color})
 
       setIsDrawing(true)
     } else if (event.nativeEvent.type === 'mousemove' && isDrawing) {
       const {offsetX, offsetY} = event.nativeEvent
       contextRef.current.lineTo(offsetX, offsetY)
+      let points = {x: offsetX, y: offsetY, color}
+
+      // drawings.push(points)
+
+      sendDrawing(points)
       contextRef.current.stroke()
-    } else {
+    } else if (event.nativeEvent.type === 'mouseup') {
       contextRef.current.closePath()
       setIsDrawing(false)
     }
