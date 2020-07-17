@@ -23,8 +23,33 @@ function Whiteboard() {
     contextRef.current = context
   }, [])
 
-  const startDrawing = ({nativeEvent}) => {
-    const {offsetX, offsetY} = nativeEvent
+  const combinedDraw = event => {
+    console.log('THIS IS NATIVE EVENT --->,', event.nativeEvent)
+    console.log('THIS IS EVENT.TARGET --->,', event.nativeEvent.type)
+    if (event.nativeEvent.type === 'mousedown') {
+      const {offsetX, offsetY} = event.nativeEvent
+      contextRef.current.beginPath()
+      contextRef.current.moveTo(offsetX, offsetY)
+
+      const context = canvasRef.current.getContext('2d')
+      context.strokeStyle = color
+
+      setIsDrawing(true)
+    } else if (event.nativeEvent.type === 'mousemove' && isDrawing) {
+      const {offsetX, offsetY} = event.nativeEvent
+      contextRef.current.lineTo(offsetX, offsetY)
+      contextRef.current.stroke()
+    } else {
+      contextRef.current.closePath()
+      setIsDrawing(false)
+    }
+  }
+
+  const startDrawing = event => {
+    console.log('THIS IS NATIVE EVENT --->,', event.nativeEvent)
+    console.log('THIS IS EVENT.TARGET --->,', event.nativeEvent.type)
+
+    const {offsetX, offsetY} = event.nativeEvent
     contextRef.current.beginPath()
     contextRef.current.moveTo(offsetX, offsetY)
 
@@ -57,10 +82,18 @@ function Whiteboard() {
         }}
       />
 
-      <canvas
+      <h1>HIIIIIIIIIIIIIIII</h1>
+
+      {/* <canvas
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
         onMouseMove={draw}
+        ref={canvasRef}
+      /> */}
+      <canvas
+        onMouseDown={combinedDraw}
+        onMouseUp={combinedDraw}
+        onMouseMove={combinedDraw}
         ref={canvasRef}
       />
     </div>
