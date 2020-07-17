@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {SketchPicker} from 'react-color'
 import queryString from 'query-string'
 import io from 'socket.io-client'
-import {Whiteboard, Timer, UserDashboard} from '../components'
+import {Timer, UserDashboard} from '../components'
 
 let socket
 
@@ -11,7 +11,6 @@ let socket
 import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
-import Whiteboard from './Whiteboard'
 
 export const GameRoom = ({location}) => {
   const [name, setName] = useState('')
@@ -209,9 +208,8 @@ export const GameRoom = ({location}) => {
         /> */}
         </div>
         <Timer />
-        //<Whiteboard />
+        {/* //<Whiteboard /> */}
         <UserDashboard />
-
       </div>
     </div>
   )
