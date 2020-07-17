@@ -2,10 +2,19 @@ import React, {useRef, useEffect, useState} from 'react'
 import {SketchPicker} from 'react-color'
 import {connect} from 'react-redux'
 
-function Whiteboard() {
+function Whiteboard({
+  drawing,
+  drawings,
+  setDrawing,
+  sendDrawing,
+  draw,
+  setIsDrawing,
+  isDrawing,
+  contextRef
+}) {
   const canvasRef = useRef(null)
-  const contextRef = useRef(null)
-  const [isDrawing, setIsDrawing] = useState(false)
+  // const contextRef = useRef(null)
+  // const [isDrawing, setIsDrawing] = useState(false)
   const [color, setColor] = useState('#000000')
 
   useEffect(() => {
@@ -32,6 +41,10 @@ function Whiteboard() {
     context.strokeStyle = color
 
     setIsDrawing(true)
+    // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
+    let data = {x: offsetX, y: offsetY}
+    // console.log('THIS IS DATA!!!!!!!', data)
+    sendDrawing(data)
   }
 
   const finishDrawing = () => {
@@ -39,14 +52,33 @@ function Whiteboard() {
     setIsDrawing(false)
   }
 
-  const draw = ({nativeEvent}) => {
+  const setCoordinates = ({nativeEvent}) => {
     if (!isDrawing) {
       return
     }
     const {offsetX, offsetY} = nativeEvent
-    contextRef.current.lineTo(offsetX, offsetY)
-    contextRef.current.stroke()
+    // contextRef.current.lineTo(offsetX, offsetY)
+    // contextRef.current.stroke()
+
+    let drawing = {x: offsetX, y: offsetY}
+    drawings.push(drawing)
+    sendDrawing(drawings)
   }
+
+  // const draw = ({nativeEvent}) => {
+  //   if (!isDrawing) {
+  //     return
+  //   }
+  //   const {offsetX, offsetY} = nativeEvent
+  //   contextRef.current.lineTo(offsetX, offsetY)
+  //   contextRef.current.stroke()
+
+  // let data = {x: offsetX, y: offsetY}
+  // console.log('THIS IS DRAWINGGGGG SINGULAR', data)
+  // drawings.push(drawing)
+  // console.log('THIS IS DRAWINGGGSSSS', drawings)
+  // sendDrawing(data)
+  // }
 
   return (
     <div>
@@ -60,7 +92,9 @@ function Whiteboard() {
       <canvas
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
-        onMouseMove={draw}
+        onMouseMove={setCoordinates}
+        // value={drawings}
+        // onChange={({target: {value}}) => sendDrawing(value)}
         ref={canvasRef}
       />
     </div>
