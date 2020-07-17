@@ -52,29 +52,27 @@ export const GameRoom = ({location}) => {
   }, [])
 
   useEffect(() => {
-    socket.on('drawing', drawings => {
-      console.log('THIS IS DRAWINGGGG IN SOCKETTTT', drawings)
+    socket.on('drawing', thisdrawings => {
+      console.log('THIS IS DRAWINGGGG IN SOCKETTTT', thisdrawings)
 
       //startDrawing function
       // contextRef.current.beginPath()
+      const context = canvasRef.current.getContext('2d')
+      context.strokeStyle = thisdrawings.color
+      if (thisdrawings) {
+        thisdrawings.map(point => {
+          contextRef.current.lineTo(point.x, point.y)
 
-      // drawings.map(drawing => {
-      //   contextRef.current.moveTo(drawing.x, drawing.y)
-      // })
-      // const context = canvasRef.current.getContext('2d')
-      // context.strokeStyle = color
+          contextRef.current.stroke()
 
-      //draw function
-      drawings.map(drawing => {
-        contextRef.current.lineTo(drawing.x, drawing.y)
-      })
-      contextRef.current.stroke()
-      // finishDrawing function
-      // contextRef.current.closePath()
-      setDrawing('')
-      setDrawings([])
-      setIsDrawing(false)
-      console.log('THIS IS SET IS DRAWINGGGGG', isDrawing)
+          // contextRef.current.closePath()
+          setDrawing('')
+          setDrawings([])
+          setIsDrawing(false)
+        })
+
+        // console.log('THIS IS SET IS DRAWINGGGGG', isDrawing)
+      }
 
       // draw(drawings)
       // console.log('%c DRAWING USE EFFECT!', 'color: green; font-weight: bold;', drawings)
@@ -104,9 +102,13 @@ export const GameRoom = ({location}) => {
     }
   }
 
-  const sendDrawing = drawings => {
+  const sendDrawing = theDrawings => {
     if (drawings) {
-      socket.emit('draw', drawings)
+      const context = canvasRef.current.getContext('2d')
+      context.strokeStyle = color
+      socket.emit('draw', theDrawings)
+      setDrawing('')
+      setDrawings([])
     }
   }
 
@@ -121,10 +123,10 @@ export const GameRoom = ({location}) => {
 
     setIsDrawing(true)
 
-    setDrawing({x: offsetX, y: offsetY})
+    setDrawing({x: offsetX, y: offsetY, color})
     console.log('THIS IS DRAWING IN STARTDRAWING FUNCTION', drawing)
     // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
-    let data = {x: offsetX, y: offsetY}
+    let data = {x: offsetX, y: offsetY, color}
     // console.log('THIS IS DATA!!!!!!!', data)
     sendDrawing(data)
     setDrawing('')
@@ -151,13 +153,16 @@ export const GameRoom = ({location}) => {
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
 
-    let drawing = {x: offsetX, y: offsetY}
-    console.log('THIS IS DRAWINGGGGG SINGULAR', drawing)
-    drawings.push(drawing)
-    console.log('THIS IS DRAWINGGGSSSS', drawings)
+    const context = canvasRef.current.getContext('2d')
+    context.strokeStyle = color
+    let points = {x: offsetX, y: offsetY, color}
+    // console.log('THIS IS DRAWINGGGGG SINGULAR', points)
+    drawings.push(points)
+    // console.log('THIS IS DRAWINGGGSSSS', points)
     sendDrawing(drawings)
     setDrawing('')
     setDrawings([])
+    // finishDrawing()
   }
 
   return (
