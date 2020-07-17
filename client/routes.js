@@ -2,7 +2,14 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 // import PropTypes from 'prop-types'
-import {Home, Start, UserHome, Instructions, GameRoom} from './components'
+import {
+  Home,
+  Start,
+  UserHome,
+  Instructions,
+  GameRoom,
+  UserDashboard
+} from './components'
 
 // import {me} from './store'
 
@@ -28,11 +35,11 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in eventually we want whiteboard here */}
-            <Route path="/home" component={UserHome} />
+            <Route path="/game" component={GameRoom} />
           </Switch>
         )}
         {/* Displays our Home component as a fallback */}
-        <Route component={Home} />
+        <Route component={Start} />
       </Switch>
     )
   }

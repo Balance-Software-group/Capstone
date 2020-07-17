@@ -1,19 +1,17 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-// import PropTypes from 'prop-types'
-// import {auth} from '../store'
+import PropTypes from 'prop-types'
+import {createPlayer} from '../store'
 import {Button, Form} from 'semantic-ui-react'
+import history from '../history'
 
-/**
- * COMPONENT
- */
-const AuthForm = props => {
+const StartForm = props => {
+  const {handleSubmit} = props
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <div>
         <Form.Field>
           <label>
@@ -30,42 +28,41 @@ const AuthForm = props => {
             <small>Enter Game name</small>
           </label>
           <input
-            name="gameName"
+            name="gameCode"
             type="text"
             onChange={e => setRoom(e.target.value)}
           />
         </Form.Field>
         <div>
-          <Link
-            onClick={e => (!name || !room ? e.preventDefault() : null)}
-            to={`/game?name=${name}&room=${room}`}
-            // to="/game"
-          >
-            <Button basic color="black" type="submit">
-              Start Game
-            </Button>
-          </Link>
+          <Button basic color="black" type="submit">
+            Start Game
+          </Button>
         </div>
       </div>
     </Form>
   )
 }
 
-const mapStart = state => {
+const mapState = state => {
   return {
-    name: 'Username',
-    displayName: 'Username',
-    error: state.user.error
+    players: state.playerReducer.playerList
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
+    async handleSubmit(evt) {
       evt.preventDefault()
-      const formName = evt.target.name
+      const username = evt.target.username.value
+      const gameCode = evt.target.gameCode.value
+      await dispatch(createPlayer({username, gameCode}))
+      history.push(`/game?name=${username}&room=${gameCode}`)
     }
   }
 }
 
-export const Start = connect(mapStart, mapDispatch)(AuthForm)
+StartForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired
+}
+
+export const Start = connect(mapState, mapDispatch)(StartForm)

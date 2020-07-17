@@ -1,5 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react'
 import {SketchPicker} from 'react-color'
+import {connect} from 'react-redux'
 
 function Whiteboard({
   drawing,
@@ -100,4 +101,12 @@ function Whiteboard({
   )
 }
 
-export default Whiteboard
+const mapState = () => {
+  return {}
+}
+
+const mapDispatch = () => {
+  return {}
+}
+
+export default connect(mapState, mapDispatch)(Whiteboard)

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {SketchPicker} from 'react-color'
 import queryString from 'query-string'
 import io from 'socket.io-client'
+import {Whiteboard, Timer, UserDashboard} from '../components'
 
 let socket
 
@@ -207,6 +208,10 @@ export const GameRoom = ({location}) => {
           contextRef={contextRef}
         /> */}
         </div>
+        <Timer />
+        //<Whiteboard />
+        <UserDashboard />
+
       </div>
     </div>
   )
