@@ -113,56 +113,77 @@ export const GameRoom = ({location}) => {
   }
 
   // whiteboard helper function
-  const startDrawing = ({nativeEvent}) => {
-    const {offsetX, offsetY} = nativeEvent
-    contextRef.current.beginPath()
-    contextRef.current.moveTo(offsetX, offsetY)
+  // const startDrawing = ({nativeEvent}) => {
+  //   const {offsetX, offsetY} = nativeEvent
+  //   contextRef.current.beginPath()
+  //   contextRef.current.moveTo(offsetX, offsetY)
 
-    const context = canvasRef.current.getContext('2d')
-    context.strokeStyle = color
+  //   const context = canvasRef.current.getContext('2d')
+  //   context.strokeStyle = color
 
-    setIsDrawing(true)
+  //   setIsDrawing(true)
 
-    setDrawing({x: offsetX, y: offsetY, color})
-    console.log('THIS IS DRAWING IN STARTDRAWING FUNCTION', drawing)
-    // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
-    let data = {x: offsetX, y: offsetY, color}
-    // console.log('THIS IS DATA!!!!!!!', data)
-    sendDrawing(data)
-    setDrawing('')
-    setDrawings([])
-    sendDrawing([{}])
-  }
+  //   setDrawing({x: offsetX, y: offsetY, color})
+  //   console.log('THIS IS DRAWING IN STARTDRAWING FUNCTION', drawing)
+  //   // console.log('THIS IS OFFSET X AND Y!!!!!!!', offsetX, offsetY)
+  //   let data = {x: offsetX, y: offsetY, color}
+  //   // console.log('THIS IS DATA!!!!!!!', data)
+  //   sendDrawing(data)
+  //   setDrawing('')
+  //   setDrawings([])
+  //   sendDrawing([{}])
+  // }
 
-  const finishDrawing = () => {
-    contextRef.current.closePath()
-    setDrawing('')
-    setDrawings([])
-    setIsDrawing(false)
-    console.log('FINISH DRAWING IS DONEEEEEEE')
-  }
+  // const finishDrawing = () => {
+  //   contextRef.current.closePath()
+  //   setDrawing('')
+  //   setDrawings([])
+  //   setIsDrawing(false)
+  //   console.log('FINISH DRAWING IS DONEEEEEEE')
+  // }
 
-  const draw = ({nativeEvent}) => {
-    if (!isDrawing) {
-      console.log('WE ARE NOT DRAWING')
-      // setDrawing('')
-      // setDrawings([])
-      return
+  // const draw = ({nativeEvent}) => {
+  //   if (!isDrawing) {
+  //     console.log('WE ARE NOT DRAWING')
+  //     // setDrawing('')
+  //     // setDrawings([])
+  //     return
+  //   }
+  //   const {offsetX, offsetY} = nativeEvent
+  //   contextRef.current.lineTo(offsetX, offsetY)
+  //   contextRef.current.stroke()
+
+  //   const context = canvasRef.current.getContext('2d')
+  //   context.strokeStyle = color
+  //   let points = {x: offsetX, y: offsetY, color}
+  //   // console.log('THIS IS DRAWINGGGGG SINGULAR', points)
+  //   drawings.push(points)
+  //   // console.log('THIS IS DRAWINGGGSSSS', points)
+  //   sendDrawing(drawings)
+  //   setDrawing('')
+  //   setDrawings([])
+  //   // finishDrawing()
+  // }
+  const combinedDraw = event => {
+    console.log('THIS IS NATIVE EVENT --->,', event.nativeEvent)
+    console.log('THIS IS EVENT.TARGET --->,', event.nativeEvent.type)
+    if (event.nativeEvent.type === 'mousedown') {
+      const {offsetX, offsetY} = event.nativeEvent
+      contextRef.current.beginPath()
+      contextRef.current.moveTo(offsetX, offsetY)
+
+      const context = canvasRef.current.getContext('2d')
+      context.strokeStyle = color
+
+      setIsDrawing(true)
+    } else if (event.nativeEvent.type === 'mousemove' && isDrawing) {
+      const {offsetX, offsetY} = event.nativeEvent
+      contextRef.current.lineTo(offsetX, offsetY)
+      contextRef.current.stroke()
+    } else {
+      contextRef.current.closePath()
+      setIsDrawing(false)
     }
-    const {offsetX, offsetY} = nativeEvent
-    contextRef.current.lineTo(offsetX, offsetY)
-    contextRef.current.stroke()
-
-    const context = canvasRef.current.getContext('2d')
-    context.strokeStyle = color
-    let points = {x: offsetX, y: offsetY, color}
-    // console.log('THIS IS DRAWINGGGGG SINGULAR', points)
-    drawings.push(points)
-    // console.log('THIS IS DRAWINGGGSSSS', points)
-    sendDrawing(drawings)
-    setDrawing('')
-    setDrawings([])
-    // finishDrawing()
   }
 
   return (
@@ -189,9 +210,9 @@ export const GameRoom = ({location}) => {
             }}
           />
           <canvas
-            onMouseDown={startDrawing}
-            onMouseUp={finishDrawing}
-            onMouseMove={draw}
+            onMouseDown={combinedDraw}
+            onMouseUp={combinedDraw}
+            onMouseMove={combinedDraw}
             // value={drawings}
             // onChange={({target: {value}}) => sendDrawing(value)}
             ref={canvasRef}
