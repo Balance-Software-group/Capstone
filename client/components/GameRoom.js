@@ -9,6 +9,7 @@ let socket
 import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
+// import TheBoard from './theBoard'
 
 export const GameRoom = ({location}) => {
   const [name, setName] = useState('')
@@ -18,10 +19,10 @@ export const GameRoom = ({location}) => {
   const [messages, setMessages] = useState([])
   const ENDPOINT = window.location.origin
 
-  //Whiteboard
+  // //Whiteboard
   const canvasRef = useRef(null)
   const colorsRef = useRef(null)
-  // const socketRef = useRef();
+  // // const socketRef = useRef();
 
   useEffect(
     () => {
@@ -101,17 +102,21 @@ export const GameRoom = ({location}) => {
     //MOUSE MOVEMENTS/CLICKS
     const onMouseDown = e => {
       drawing = true
-      current.x = e.clientX
-      current.y = e.clientY
+      console.log('CURRENT', current)
+      console.log('client', e.clientX, e.clientY)
+      console.log('EVENT', e)
+      current.x = e.offsetX
+      current.y = e.offsetY
+      console.log('CURRENT AGAIN', current)
     }
 
     const onMouseMove = e => {
       if (!drawing) {
         return
       }
-      drawLine(current.x, current.y, e.clientX, e.clientY, current.color, true)
-      current.x = e.clientX
-      current.y = e.clientY
+      drawLine(current.x, current.y, e.offsetX, e.offsetY, current.color, true)
+      current.x = e.offsetX
+      current.y = e.offsetY
     }
 
     const onMouseUp = e => {
@@ -119,7 +124,7 @@ export const GameRoom = ({location}) => {
         return
       }
       drawing = false
-      drawLine(current.x, current.y, e.clientX, e.clientY, current.color, true)
+      drawLine(current.x, current.y, e.offsetX, e.offsetY, current.color, true)
     }
 
     //THROTTLE limiting num of events per second
@@ -163,12 +168,12 @@ export const GameRoom = ({location}) => {
   const mystyle = {
     width: '100%',
     height: '100%',
-    position: 'absolute',
+    // position: 'absolute',
     left: '0',
     right: '0',
     bottom: '0',
     top: '0',
-    backgroundColor: 'blue'
+    backgroundColor: 'white'
   }
 
   return (
