@@ -94,6 +94,22 @@ io.on('connection', socket => {
     // socket.broadcast.emit('drawing', data)
   })
 
+  socket.on('color-change', data => {
+    const user = getUser(socket.id)
+    color = data.color
+    console.log('THIS IS COLOR IN SOCKET', data)
+    // currentUsersInRoom = users.filter((user) => {
+    // 	if (user.room === data.room) {
+    // 		if (user.id === data.id) {
+    // 			color = data.color;
+    // 			user.color = data.color;
+    // 		}
+    // 		return user;
+    // 	}
+    // });
+    io.in(user.room).emit('users', color)
+  })
+
   socket.on('disconnect', () => {
     console.log(`Connection ${socket.id} has left the building`)
     const user = removeUser(socket.id)
