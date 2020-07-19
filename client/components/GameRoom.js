@@ -21,10 +21,8 @@ export const GameRoom = ({location}) => {
   const [currColor, setcurrColor] = useState('#00FFFF')
   const ENDPOINT = window.location.origin
 
-  // //Whiteboard
   const canvasRef = useRef(null)
   const colorsRef = useRef(null)
-  // // const socketRef = useRef();
 
   useEffect(
     () => {
@@ -167,6 +165,13 @@ export const GameRoom = ({location}) => {
     },
     [currColor]
   )
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const context = canvas.getContext('2d')
+
+    context.strokeStyle = currColor
+  })
 
   const mystyle = {
     width: '100%',
