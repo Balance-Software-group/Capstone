@@ -53,132 +53,120 @@ export const GameRoom = ({location}) => {
     }
   }
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    const test = colorsRef.current
-    const context = canvas.getContext('2d')
+  useEffect(
+    () => {
+      const canvas = canvasRef.current
+      const test = colorsRef.current
+      const context = canvas.getContext('2d')
 
-    //COLORS
-    // const colors = document.getElementsByClassName('color')
-    // console.log(colors, 'the colors')
-    // console.log(test)
-    const current = {}
+      //COLORS
+      // const colors = document.getElementsByClassName('color')
+      // console.log(colors, 'the colors')
+      // console.log(test)
+      const current = {}
 
-    console.log('THIS IS COLOR ON STATE', currColor)
-    // const onColorUpdate = e => {
-    //   current.color = e.target.className.split(' ')[1]
-    // }
+      console.log('THIS IS COLOR ON STATE', currColor)
+      // const onColorUpdate = e => {
+      //   current.color = e.target.className.split(' ')[1]
+      // }
 
-    // for (let i = 0; i < colors.length; i++) {
-    //   colors[i].addEventListener('click', onColorUpdate, false)
-    // }
-    let drawing = false
+      // for (let i = 0; i < colors.length; i++) {
+      //   colors[i].addEventListener('click', onColorUpdate, false)
+      // }
+      let drawing = false
 
-    //DRAWLINE
-    const drawLine = (x0, y0, x1, y1, color, emit) => {
-      context.beginPath()
-      context.moveTo(x0, y0)
-      context.lineTo(x1, y1)
-      context.strokeStyle = color
-      context.lineWidth = 2
-      context.stroke()
-      context.closePath()
-      console.log('inside DrawLine', context.strokeStyle)
+      //DRAWLINE
+      const drawLine = (x0, y0, x1, y1, color, emit) => {
+        context.beginPath()
+        context.moveTo(x0, y0)
+        context.lineTo(x1, y1)
+        context.strokeStyle = color
+        context.lineWidth = 2
+        context.stroke()
+        context.closePath()
+        console.log('inside DrawLine', context.strokeStyle)
 
-      if (!emit) {
-        return
+        if (!emit) {
+          return
+        }
+        const w = canvas.width
+        const h = canvas.height
+
+        socket.emit('draw', {
+          x0: x0 / w,
+          y0: y0 / h,
+          x1: x1 / w,
+          y1: y1 / h,
+          color: context.strokeStyle
+        })
       }
-      const w = canvas.width
-      const h = canvas.height
 
-      socket.emit('draw', {
-        x0: x0 / w,
-        y0: y0 / h,
-        x1: x1 / w,
-        y1: y1 / h,
-        color: context.strokeStyle
-      })
-    }
-
-    const mouseEventColors = currColor
-    //MOUSE MOVEMENTS/CLICKS
-    const onMouseDown = e => {
-      drawing = true
-      current.x = e.offsetX
-      current.y = e.offsetY
-    }
-
-    const onMouseMove = e => {
-      // const mousemoveColor = currColor
-      if (!drawing) {
-        return
+      //MOUSE MOVEMENTS/CLICKS
+      const onMouseDown = e => {
+        drawing = true
+        current.x = e.offsetX
+        current.y = e.offsetY
       }
-      console.log('onmousemove color', currColor)
-      drawLine(
-        current.x,
-        current.y,
-        e.offsetX,
-        e.offsetY,
-        mouseEventColors,
-        true
-      )
-      current.x = e.offsetX
-      current.y = e.offsetY
-    }
 
-    const onMouseUp = e => {
-      if (!drawing) {
-        return
+      const onMouseMove = e => {
+        // const mousemoveColor = currColor
+        if (!drawing) {
+          return
+        }
+        console.log('onmousemove color', currColor)
+        drawLine(current.x, current.y, e.offsetX, e.offsetY, currColor, true)
+        current.x = e.offsetX
+        current.y = e.offsetY
       }
-      drawing = false
-      drawLine(
-        current.x,
-        current.y,
-        e.offsetX,
-        e.offsetY,
-        mouseEventColors,
-        true
-      )
-    }
 
-    //THROTTLE limiting num of events per second
-    const throttle = (callback, delay) => {
-      let previousCall = new Date().getTime()
-      return function() {
-        const time = new Date().getTime()
+      const onMouseUp = e => {
+        if (!drawing) {
+          return
+        }
+        drawing = false
+        drawLine(current.x, current.y, e.offsetX, e.offsetY, currColor, true)
+      }
 
-        if (time - previousCall >= delay) {
-          previousCall = time
-          callback.apply(null, arguments)
+      //THROTTLE limiting num of events per second
+      const throttle = (callback, delay) => {
+        let previousCall = new Date().getTime()
+        return function() {
+          const time = new Date().getTime()
+
+          if (time - previousCall >= delay) {
+            previousCall = time
+            callback.apply(null, arguments)
+          }
         }
       }
-    }
 
-    canvas.addEventListener('mousedown', onMouseDown, false)
-    canvas.addEventListener('mouseup', onMouseUp, false)
-    canvas.addEventListener('mouseout', onMouseUp, false)
-    canvas.addEventListener('mousemove', throttle(onMouseMove, 10), false)
+      canvas.addEventListener('mousedown', onMouseDown, false)
+      canvas.addEventListener('mouseup', onMouseUp, false)
+      canvas.addEventListener('mouseout', onMouseUp, false)
+      canvas.addEventListener('mousemove', throttle(onMouseMove, 10), false)
 
-    //RESIZE
-    const onResize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
+      //RESIZE
+      const onResize = () => {
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+      }
 
-    window.addEventListener('resize', onResize, false)
-    onResize()
+      window.addEventListener('resize', onResize, false)
+      onResize()
 
-    const onDrawingEvent = data => {
-      const w = canvas.width
-      const h = canvas.height
-      console.log('DATA.COLOR', data.color)
-      drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color)
-    }
+      const onDrawingEvent = data => {
+        const w = canvas.width
+        const h = canvas.height
+        console.log('DATA.COLOR', data.color)
+        drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color)
+      }
 
-    // socketRef.current = io.connect('/');
-    // socketRef.current.on('draw', onDrawingEvent)
-    socket.on('draw', onDrawingEvent)
-  }, [])
+      // socketRef.current = io.connect('/');
+      // socketRef.current.on('draw', onDrawingEvent)
+      socket.on('draw', onDrawingEvent)
+    },
+    [currColor]
+  )
 
   const mystyle = {
     width: '100%',
