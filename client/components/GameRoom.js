@@ -9,6 +9,7 @@ let socket
 import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
+
 // import TheBoard from './theBoard'
 
 export const GameRoom = ({location}) => {
@@ -17,6 +18,7 @@ export const GameRoom = ({location}) => {
   const [users, setUsers] = useState('')
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
+  const [currColor, setcurrColor] = useState('#00FFFF')
   const ENDPOINT = window.location.origin
 
   // //Whiteboard
@@ -57,21 +59,19 @@ export const GameRoom = ({location}) => {
     const context = canvas.getContext('2d')
 
     //COLORS
-    const colors = document.getElementsByClassName('color')
-    console.log(colors, 'the colors')
-    console.log(test)
+    // const colors = document.getElementsByClassName('color')
+    // console.log(colors, 'the colors')
+    // console.log(test)
+    const current = {}
 
-    const current = {
-      color: 'black'
-    }
+    console.log('THIS IS COLOR ON STATE', currColor)
+    // const onColorUpdate = e => {
+    //   current.color = e.target.className.split(' ')[1]
+    // }
 
-    const onColorUpdate = e => {
-      current.color = e.target.className.split(' ')[1]
-    }
-
-    for (let i = 0; i < colors.length; i++) {
-      colors[i].addEventListener('click', onColorUpdate, false)
-    }
+    // for (let i = 0; i < colors.length; i++) {
+    //   colors[i].addEventListener('click', onColorUpdate, false)
+    // }
     let drawing = false
 
     //DRAWLINE
@@ -83,6 +83,7 @@ export const GameRoom = ({location}) => {
       context.lineWidth = 2
       context.stroke()
       context.closePath()
+      console.log('inside DrawLine', context.strokeStyle)
 
       if (!emit) {
         return
@@ -95,26 +96,32 @@ export const GameRoom = ({location}) => {
         y0: y0 / h,
         x1: x1 / w,
         y1: y1 / h,
-        color
+        color: context.strokeStyle
       })
     }
 
+    const mouseEventColors = currColor
     //MOUSE MOVEMENTS/CLICKS
     const onMouseDown = e => {
       drawing = true
-      console.log('CURRENT', current)
-      console.log('client', e.clientX, e.clientY)
-      console.log('EVENT', e)
       current.x = e.offsetX
       current.y = e.offsetY
-      console.log('CURRENT AGAIN', current)
     }
 
     const onMouseMove = e => {
+      // const mousemoveColor = currColor
       if (!drawing) {
         return
       }
-      drawLine(current.x, current.y, e.offsetX, e.offsetY, current.color, true)
+      console.log('onmousemove color', currColor)
+      drawLine(
+        current.x,
+        current.y,
+        e.offsetX,
+        e.offsetY,
+        mouseEventColors,
+        true
+      )
       current.x = e.offsetX
       current.y = e.offsetY
     }
@@ -124,7 +131,14 @@ export const GameRoom = ({location}) => {
         return
       }
       drawing = false
-      drawLine(current.x, current.y, e.offsetX, e.offsetY, current.color, true)
+      drawLine(
+        current.x,
+        current.y,
+        e.offsetX,
+        e.offsetY,
+        mouseEventColors,
+        true
+      )
     }
 
     //THROTTLE limiting num of events per second
@@ -157,6 +171,7 @@ export const GameRoom = ({location}) => {
     const onDrawingEvent = data => {
       const w = canvas.width
       const h = canvas.height
+      console.log('DATA.COLOR', data.color)
       drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color)
     }
 
@@ -176,6 +191,8 @@ export const GameRoom = ({location}) => {
     backgroundColor: 'white'
   }
 
+  console.log('this is currColor on state', currColor)
+
   return (
     <div>
       <div>
@@ -193,6 +210,10 @@ export const GameRoom = ({location}) => {
       <TextContainer users={users} />
       <div>
         <div>
+          <SketchPicker
+            color={currColor}
+            onChangeComplete={color => setcurrColor(color.hex)}
+          />
           <canvas ref={canvasRef} style={mystyle} />
           <div ref={colorsRef} className="colors">
             <div className="color black">black</div>
