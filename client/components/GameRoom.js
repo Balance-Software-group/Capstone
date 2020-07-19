@@ -3,6 +3,7 @@ import {SketchPicker} from 'react-color'
 import queryString from 'query-string'
 import io from 'socket.io-client'
 import {Timer, UserDashboard} from '../components'
+import {Container, Grid, Header} from 'semantic-ui-react'
 
 let socket
 
@@ -57,13 +58,12 @@ export const GameRoom = ({location}) => {
       const test = colorsRef.current
       const context = canvas.getContext('2d')
 
-      //COLORS
+      // COLORS
       // const colors = document.getElementsByClassName('color')
-      // console.log(colors, 'the colors')
-      // console.log(test)
+
       const current = {}
 
-      console.log('THIS IS COLOR ON STATE', currColor)
+      // console.log('THIS IS COLOR ON STATE', currColor)
       // const onColorUpdate = e => {
       //   current.color = e.target.className.split(' ')[1]
       // }
@@ -112,6 +112,7 @@ export const GameRoom = ({location}) => {
           return
         }
         console.log('onmousemove color', currColor)
+
         drawLine(current.x, current.y, e.offsetX, e.offsetY, currColor, true)
         current.x = e.offsetX
         current.y = e.offsetY
@@ -158,9 +159,6 @@ export const GameRoom = ({location}) => {
         console.log('DATA.COLOR', data.color)
         drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color)
       }
-
-      // socketRef.current = io.connect('/');
-      // socketRef.current.on('draw', onDrawingEvent)
       socket.on('draw', onDrawingEvent)
     },
     [currColor]
@@ -176,7 +174,6 @@ export const GameRoom = ({location}) => {
   const mystyle = {
     width: '100%',
     height: '100%',
-    // position: 'absolute',
     left: '0',
     right: '0',
     bottom: '0',
@@ -188,42 +185,83 @@ export const GameRoom = ({location}) => {
 
   return (
     <div>
-      <div>
-        <h3>
-          Welcome to room {room}! Type your guesses here and chat with your
-          friends!
-        </h3>
-        <Messages messages={messages} name={name} />
-        <Input
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
-        />
-      </div>
-      <TextContainer users={users} />
-      <div>
-        <div>
+      <Container>
+        <Grid>
+          <Grid.Row>
+            <h3>
+              Welcome to room {room}! Type your guesses here and chat with your
+              friends!
+            </h3>
+          </Grid.Row>
+
           <SketchPicker
             color={currColor}
             onChangeComplete={color => setcurrColor(color.hex)}
           />
-          <canvas ref={canvasRef} style={mystyle} />
-          <div ref={colorsRef} className="colors">
-            <div className="color black">black</div>
-            <div className="color red">red</div>
-            <div className="color green">green</div>
-            <div className="color blue">blue</div>
-            <div className="color yellow">yellow</div>
+
+          <div>
+            <Messages messages={messages} name={name} />
+            <Input
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
           </div>
-        </div>
-        <Timer />
-        <UserDashboard />
+          <TextContainer users={users} />
+        </Grid>
+      </Container>
+      <div>
+        <canvas ref={canvasRef} style={mystyle} />
+        {/* <div ref={colorsRef} className="colors">
+          <div className="color black">black</div>
+          <div className="color red">red</div>
+          <div className="color green">green</div>
+          <div className="color blue">blue</div>
+          <div className="color yellow">yellow</div>
+        </div> */}
       </div>
     </div>
   )
 }
 
 export default GameRoom
+
+// <Container>
+//     <Grid>
+//       <Grid.Row>
+//           <h3>
+//           Welcome to room: {room}! Chat, draw, have fun!
+//         </h3>
+
+//       </Grid.Row>
+
+//       <Grid.Row>
+//         <Grid.Column width={12}>
+//           {/* <div ref={colorsRef} className="colors">
+//             <div className="color white">Eraser</div>
+//           </div> */}
+//           <canvas ref={canvasRef} style={mystyle} />
+//         </Grid.Column>
+//         <Grid.Column width={4}>
+//           <div>
+//           <SketchPicker
+//             color={currColor}
+//             onChangeComplete={color => setcurrColor(color.hex)}
+//           />
+//           <div>
+//           <Messages messages={messages} name={name} />
+//           <Input
+//           message={message}
+//           setMessage={setMessage}
+//           sendMessage={sendMessage}
+//           />
+//           <TextContainer users={users} />
+//           </div>
+//           </div>
+//         </Grid.Column>
+//       </Grid.Row>
+//     </Grid>
+//   </Container>
 
 // import React, {useState, useEffect, useRef} from 'react'
 // import {SketchPicker} from 'react-color'
