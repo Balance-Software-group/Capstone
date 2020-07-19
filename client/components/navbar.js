@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import {Header, Image} from 'semantic-ui-react'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>Sketch and Guess</h1>
+  <Header textAlign="center">
+    <h1>Draw and Chat</h1>
     <nav />
     <hr />
-  </div>
+  </Header>
 )
 
 /**

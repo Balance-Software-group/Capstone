@@ -1,20 +1,23 @@
 import React from 'react'
+import {Form} from 'semantic-ui-react'
 
 const Input = ({message, setMessage, sendMessage}) => {
   return (
-    <form className="form">
+    <Form className="form">
       <input
         className="input"
         type="text"
-        placeholder="Type your guesses here!"
+        placeholder="Start chatting!"
         value={message}
         onChange={({target: {value}}) => setMessage(value)}
-        onKeyPress={e => (e.key === 'Enter' ? sendMessage(e) : null)}
+        onKeyPress={e =>
+          e.key === 'Enter' ? sendMessage(e) && setMessage('') : null
+        }
       />
-      <button className="sendButton" onClick={e => sendMessage(e)}>
+      {/* <button className="sendButton" type="submit" onClick={e => sendMessage(e) && setMessage('')}>
         Send
-      </button>
-    </form>
+      </button> */}
+    </Form>
   )
 }
 
@@ -25,12 +28,12 @@ export default Input
 {
   /*<Form>
     //<Form.TextArea>
-     <Form.Input 
+     <Form.Input
         onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} /> 
+        onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null} />
         </Form.TextArea>
-         <Form.Input value= {message} 
-        onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}/> 
+         <Form.Input value= {message}
+        onKeyPress={e => e.key === 'Enter' ? sendMessage(e) : null}/>
         /* <Button
         content="Add Reply"
         labelPosition="left"
