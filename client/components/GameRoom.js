@@ -11,7 +11,7 @@ let socket
 
 // -------------------------MOVED COLOR FUNCS ------------------------
 const current = {
-  color: '#da9a2f'
+  color: '#000000'
 }
 
 // helper that will update the current color
@@ -42,7 +42,7 @@ export const GameRoom = ({location}) => {
   const colorsRef = useRef(null)
   // const [ current, setCurrent ] = useState({ color: 'black' });
   const [test, setTest] = useState()
-  const [currColor, setcurrColor] = useState('#8b572a')
+  const [currColor, setcurrColor] = useState('#000000')
 
   useEffect(
     () => {
@@ -198,10 +198,9 @@ export const GameRoom = ({location}) => {
     backgroundColor: 'white'
   }
 
-  const erraserButton = {
-    backgroundColor: 'pink',
-    width: '60px',
-    height: '40px'
+  const eraser = {
+    width: '5%',
+    height: '5%'
   }
 
   return (
@@ -236,15 +235,11 @@ export const GameRoom = ({location}) => {
             setcurrColor(color.hex)
           }}
         />
-        {current.color}
-        <button
-          style={erraserButton}
-          type="button"
-          name="eraser"
+        <img
+          style={eraser}
+          src="https://cdn2.iconfinder.com/data/icons/design-tools-27/1024/eraser-512.png"
           className="color white"
-        >
-          Eraser
-        </button>
+        />
         <div>
           <canvas ref={canvasRef} style={mystyle} />
         </div>
