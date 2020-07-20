@@ -95,6 +95,11 @@ io.on('connection', socket => {
     // socket.broadcast.emit('drawing', data)
   })
 
+  socket.on('clear', clearCanvas => {
+    const user = getUser(socket.id)
+    socket.to(user.room).emit('clear', clearCanvas)
+  })
+
   socket.on('disconnect', () => {
     console.log(`Connection ${socket.id} has left the building`)
     const user = removeUser(socket.id)
