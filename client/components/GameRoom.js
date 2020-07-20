@@ -214,7 +214,6 @@ export const GameRoom = ({location}) => {
               friends!
             </h3>
           </Grid.Row>
-
           <div>
             <Messages messages={messages} name={name} />
             <Input
