@@ -6,7 +6,7 @@ import {logout} from '../store'
 import {Header, Image} from 'semantic-ui-react'
 // import title from '../../public/title.jpg'
 
-const title = {backgroundImage: '../../public/title.jpg'}
+// const title = {backgroundImage: '../../public/title.jpg'}
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Header textAlign="center">
