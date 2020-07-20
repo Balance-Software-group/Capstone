@@ -22,6 +22,14 @@ const onColorUpdate = e => {
 }
 // -------------------------------------------------------------------------
 
+// const onResize = () => {
+//   canvas.width = window.innerWidth
+//   canvas.height = window.innerHeight
+// }
+
+// window.addEventListener('resize', onResize, false)
+// onResize()
+
 export const GameRoom = ({location}) => {
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
@@ -73,17 +81,6 @@ export const GameRoom = ({location}) => {
     console.log(colors, 'the colors')
     console.log(test)
 
-    // set the current color
-    // const current = {
-    //   color: 'black',
-    // };
-
-    // // helper that will update the current color
-    // const onColorUpdate = (e) => {
-    //   current.color = e.target.className.split(' ')[1];
-    // };
-
-    // loop through the color elements and add the click event listeners
     for (let i = 0; i < colors.length; i++) {
       colors[i].addEventListener('click', onColorUpdate, false)
     }
@@ -201,36 +198,6 @@ export const GameRoom = ({location}) => {
     backgroundColor: 'white'
   }
 
-  const blueButton = {
-    backgroundColor: 'blue',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px'
-  }
-  const blackButton = {
-    backgroundColor: 'black',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px'
-  }
-  const redButton = {
-    backgroundColor: 'red',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px'
-  }
-  const yellowButton = {
-    backgroundColor: 'yellow',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px'
-  }
-  const greenButton = {
-    backgroundColor: 'green',
-    borderRadius: '50%',
-    width: '40px',
-    height: '40px'
-  }
   const erraserButton = {
     backgroundColor: 'pink',
     width: '60px',
@@ -271,17 +238,18 @@ export const GameRoom = ({location}) => {
           }}
         />
         {current.color}
-        <canvas ref={canvasRef} style={mystyle} />
-        <div ref={colorsRef} className="colors">
-          <button style={blackButton} type="button" className="color black" />
-          <button style={redButton} type="button" className="color red" />
-          <button style={greenButton} type="button" className="color green" />
-          <button style={blueButton} type="button" className="color blue" />
-          <button style={yellowButton} type="button" className="color yellow" />
-          <button style={erraserButton} type="button" className="color aqua">
-            Eraser
-          </button>
+        <button
+          style={erraserButton}
+          type="button"
+          name="eraser"
+          className="color white"
+        >
+          Eraser
+        </button>
+        <div>
+          <canvas ref={canvasRef} style={mystyle} />
         </div>
+        <div ref={colorsRef} className="colors" />
       </div>
     </div>
   )
