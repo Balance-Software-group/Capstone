@@ -234,7 +234,7 @@ export const GameRoom = ({location}) => {
           style={imgStyle}
           name="delete"
           className="clear"
-          src="https://www.kindpng.com/picc/m/606-6068817_clear-vector-stamp-clear-button-icon-hd-png.png"
+          src="https://i.imgur.com/o75tGAW.png"
         />
         <div>
           <canvas ref={canvasRef} style={mystyle} />
@@ -245,3 +245,5 @@ export const GameRoom = ({location}) => {
 }
 
 export default GameRoom
+
+// https://www.kindpng.com/picc/m/606-6068817_clear-vector-stamp-clear-button-icon-hd-png.png
