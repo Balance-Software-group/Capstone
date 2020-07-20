@@ -10,9 +10,7 @@ const Input = ({message, setMessage, sendMessage}) => {
         placeholder="Start chatting!"
         value={message}
         onChange={({target: {value}}) => setMessage(value)}
-        onKeyPress={e =>
-          e.key === 'Enter' ? sendMessage(e) && setMessage('') : null
-        }
+        onKeyPress={e => (e.key === 'Enter' ? sendMessage(e) : null)}
       />
       {/* <button className="sendButton" type="submit" onClick={e => sendMessage(e) && setMessage('')}>
         Send
