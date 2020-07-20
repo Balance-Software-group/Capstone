@@ -11,7 +11,7 @@ import {Header, Image} from 'semantic-ui-react'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Header textAlign="center">
     {/* <h1>Chat and Draw</h1> */}
-    <Image style={title} />
+    {/* <Image style={title} /> */}
     <nav />
     <hr />
   </Header>
