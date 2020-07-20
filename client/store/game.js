@@ -1,68 +1,22 @@
 import axios from 'axios'
-
-/**
- * ACTION TYPES
- */
-const CREATED_PLAYER = 'CREATED_PLAYER'
-const STARTED_GAME = 'STARTED_GAME'
-const GUESSED_CORRECT = 'GUESSED_CORRECT'
-const GUESSED_WRONG = 'GUESSED_WRONG'
-const COUNTDOWN_COMPLETED = 'COUNTDOWN_COMPLETED'
-const SWITCHED_USER = 'SWITCHED_USER'
-const FINISHED_GAME = 'FINISHED_GAME'
-const WARNING = 'WARNING '
-
-/**
- * ACTION CREATORS
- */
-const createdPlayer = player => {
-  return {
-    type: CREATED_PLAYER,
-    player
-  }
-}
-
-const startedGame = () => {
-  return {
-    type: STARTED_GAME
-  }
-}
-
-const guessedCorrect = () => {
-  return {
-    type: GUESSED_CORRECT
-  }
-}
-
-const guessedWrong = () => {
-  return {
-    type: GUESSED_WRONG
-  }
-}
-
-const countdownCompleted = () => {
-  return {
-    type: COUNTDOWN_COMPLETED
-  }
-}
-
-const switchedUser = () => {
-  return {
-    type: SWITCHED_USER
-  }
-}
-
-const finishedGame = () => {
-  return {
-    type: FINISHED_GAME
-  }
-}
-
-const warning = () => {
-  return {
-    type: WARNING
-  }
-}
+import {
+  CREATED_PLAYER,
+  STARTED_GAME,
+  GUESSED_CORRECT,
+  GUESSED_WRONG,
+  COUNTDOWN_COMPLETED,
+  SWITCHED_USER,
+  FINISHED_GAME,
+  WARNING,
+  createdPlayer,
+  startedGame,
+  guessedCorrect,
+  guessedWrong,
+  countdownCompleted,
+  switchedUser,
+  finishedGame,
+  warning
+} from './action-creators'
 
 /**
  * THUNK CREATORS
