@@ -199,7 +199,7 @@ export const GameRoom = ({location}) => {
             onChangeComplete={color => setcurrColor(color.hex)}
           />
 
-          <div>
+          <div height="10px">
             <Messages messages={messages} name={name} />
             <Input
               message={message}

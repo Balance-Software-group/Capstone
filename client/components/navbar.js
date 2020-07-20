@@ -3,12 +3,15 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import {Header} from 'semantic-ui-react'
-// import title from '../../public/title.png'
+import {Header, Image} from 'semantic-ui-react'
+// import title from '../../public/title.jpg'
+
+const title = {backgroundImage: '../../public/title.jpg'}
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Header textAlign="center">
-    <h1>Chat and Draw</h1>
+    {/* <h1>Chat and Draw</h1> */}
+    <Image style={title} />
     <nav />
     <hr />
   </Header>
