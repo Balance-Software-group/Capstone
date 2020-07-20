@@ -6,12 +6,12 @@ import {logout} from '../store'
 import {Header, Image} from 'semantic-ui-react'
 // import title from '../../public/title.jpg'
 
-const title = '../../public/title.jpg'
+const title = {backgroundImage: '../../public/title.jpg'}
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Header textAlign="center">
-    <h1>Chat and Draw</h1>
-    <Image src={title} />
+    {/* <h1>Chat and Draw</h1> */}
+    <Image style={title} />
     <nav />
     <hr />
   </Header>
