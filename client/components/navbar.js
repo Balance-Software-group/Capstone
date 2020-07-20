@@ -5,12 +5,24 @@ import {Link} from 'react-router-dom'
 import {logout} from '../store'
 import {Header, Image} from 'semantic-ui-react'
 
+const myStyle = {
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '1rem'
+}
+
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div text-align="center">
-    <img src="https://i.imgur.com/tUkRVPV.png?1" height="100px" />
-    <nav />
-    <hr />
-  </div>
+  <Header textAlign="center">
+    <div>
+      <img
+        src="https://i.imgur.com/rSNU9Rp.png?1"
+        height="140px"
+        style={myStyle}
+      />
+      {/* <nav />
+    <hr /> */}
+    </div>
+  </Header>
 )
 
 /**
