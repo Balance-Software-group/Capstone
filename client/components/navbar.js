@@ -16,7 +16,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
     <div>
       <img
         src="https://i.imgur.com/rSNU9Rp.png?1"
-        height="140px"
+        width="100%"
         style={myStyle}
       />
       {/* <nav />
