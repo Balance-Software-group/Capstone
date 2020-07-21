@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {createPlayer} from '../store'
-import {Button, Form, Header} from 'semantic-ui-react'
+import {Button, Form, Header, Icon} from 'semantic-ui-react'
 import history from '../history'
 
 const StartForm = props => {
@@ -10,13 +10,21 @@ const StartForm = props => {
   const [name, setName] = useState('')
   const [room, setRoom] = useState('')
 
+  const h4Style = {
+    textAlign: 'left'
+  }
+  const divStyle = {
+    display: 'inline-block',
+    width: '30rem'
+  }
+
   return (
-    <div>
+    <div style={divStyle}>
       <Form onSubmit={handleSubmit}>
         <div>
           <Form.Field>
             <label>
-              <large>Enter Username</large>
+              <h4 style={h4Style}>Enter Username</h4>
             </label>
             <input
               name="username"
@@ -26,7 +34,7 @@ const StartForm = props => {
           </Form.Field>
           <Form.Field>
             <label>
-              <large>Enter Room name</large>
+              <h4 style={h4Style}>Enter Room name</h4>
             </label>
             <input
               name="gameCode"
@@ -35,8 +43,11 @@ const StartForm = props => {
             />
           </Form.Field>
           <div>
-            <Button basic color="black" type="submit">
-              Start Game
+            <Button color="blue" animated type="submit">
+              <Button.Content visible>Join Room</Button.Content>
+              <Button.Content hidden>
+                <Icon name="arrow right" />
+              </Button.Content>
             </Button>
           </div>
         </div>
