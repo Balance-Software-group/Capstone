@@ -8,17 +8,20 @@ import {Header, Image} from 'semantic-ui-react'
 const myStyle = {
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '1rem'
+  padding: '1rem',
+  marginBottom: '-2.5rem'
 }
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Header textAlign="center">
     <div>
-      <img
-        src="https://i.imgur.com/rSNU9Rp.png?1"
-        width="100%"
-        style={myStyle}
-      />
+      <Link to="/">
+        <img
+          src="https://i.imgur.com/rSNU9Rp.png?1"
+          width="100%"
+          style={myStyle}
+        />
+      </Link>
       {/* <nav />
     <hr /> */}
     </div>

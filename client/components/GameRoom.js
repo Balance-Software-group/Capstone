@@ -217,15 +217,14 @@ export const GameRoom = ({location}) => {
 
   const info = {
     padding: '1rem',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Monaco',
+    color: 'grey'
   }
 
   return (
     <div>
-      <h3 style={info}>
-        Welcome to room {room}! Dust off your drawing skills and chat with your
-        friends!
-      </h3>
+      <h2 style={info}>Welcome to room {room}!</h2>
       <div style={mystyle}>
         <div style={restStyle}>
           <SketchPicker

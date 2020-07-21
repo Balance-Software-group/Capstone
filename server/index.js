@@ -89,10 +89,7 @@ io.on('connection', socket => {
 
   socket.on('draw', onDrawingEvent => {
     const user = getUser(socket.id)
-    console.log('THIS IS DRAWING COORDINATES', onDrawingEvent)
     socket.to(user.room).emit('draw', onDrawingEvent)
-
-    // socket.broadcast.emit('drawing', data)
   })
 
   socket.on('clear', clearCanvas => {
