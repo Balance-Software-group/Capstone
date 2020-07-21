@@ -192,19 +192,33 @@ export const GameRoom = ({location}) => {
   }
 
   const imgStyle = {
-    width: '20%',
-    height: '20%'
+    width: '6rem',
+    height: '6rem',
+    padding: '1rem'
   }
 
   const restStyle = {
+    paddingLeft: '2rem',
     float: 'left',
-    width: '16%'
+    width: '20%'
   }
   const canvasStyle = {
     float: 'right',
-    width: '84%'
+    width: '80%'
   }
 
+  const chatboxStyle = {
+    width: '16rem'
+  }
+
+  const editButtons = {
+    width: '16rem',
+    textAlign: 'center'
+  }
+
+  // const singleButton ={
+  //   padding: '1rem'
+  // }
   return (
     <div>
       <h3>
@@ -220,7 +234,7 @@ export const GameRoom = ({location}) => {
               setcurrColor(color.hex)
             }}
           />
-          <div>
+          <div style={editButtons}>
             <img
               name="eraser"
               style={imgStyle}
@@ -235,7 +249,7 @@ export const GameRoom = ({location}) => {
             />
           </div>
 
-          <div>
+          <div style={chatboxStyle}>
             <Messages messages={messages} name={name} />
             <Input
               message={message}
