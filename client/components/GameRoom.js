@@ -216,12 +216,14 @@ export const GameRoom = ({location}) => {
     textAlign: 'center'
   }
 
-  // const singleButton ={
-  //   padding: '1rem'
-  // }
+  const info = {
+    padding: '1rem',
+    textAlign: 'center'
+  }
+
   return (
     <div>
-      <h3>
+      <h3 style={info}>
         Welcome to room {room}! Dust off your drawing skills and chat with your
         friends!
       </h3>
