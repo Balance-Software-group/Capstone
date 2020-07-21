@@ -2,8 +2,7 @@ import React, {useState, useEffect, useRef} from 'react'
 import {SketchPicker} from 'react-color'
 import queryString from 'query-string'
 import io from 'socket.io-client'
-// import {Timer, UserDashboard} from '../components'
-import {Container, Grid, Header, Icon} from 'semantic-ui-react'
+import {Container, Grid, Header, Icon, GridColumn} from 'semantic-ui-react'
 import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
@@ -187,57 +186,82 @@ export const GameRoom = ({location}) => {
     right: '0',
     bottom: '0',
     top: '0',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    float: 'right'
   }
 
   const imgStyle = {
-    width: '5%',
-    height: '5%'
+    width: '6rem',
+    height: '6rem',
+    padding: '1rem'
+  }
+
+  const restStyle = {
+    paddingLeft: '2rem',
+    float: 'left',
+    width: '20%'
+  }
+  const canvasStyle = {
+    float: 'right',
+    width: '80%'
+  }
+
+  const chatboxStyle = {
+    width: '16rem'
+  }
+
+  const editButtons = {
+    width: '16rem',
+    textAlign: 'center'
+  }
+
+  const info = {
+    padding: '1rem',
+    textAlign: 'center'
   }
 
   return (
     <div>
-      <Container>
-        <Grid>
-          <Grid.Row>
-            <h3>
-              Welcome to room {room}! Type your guesses here and chat with your
-              friends!
-            </h3>
-          </Grid.Row>
-          <div>
+      <h3 style={info}>
+        Welcome to room {room}! Dust off your drawing skills and chat with your
+        friends!
+      </h3>
+      <div style={mystyle}>
+        <div style={restStyle}>
+          <SketchPicker
+            color={currColor}
+            onChangeComplete={color => {
+              current.color = color.hex
+              setcurrColor(color.hex)
+            }}
+          />
+          <div style={editButtons}>
+            <img
+              name="eraser"
+              style={imgStyle}
+              src="https://cdn2.iconfinder.com/data/icons/design-tools-27/1024/eraser-512.png"
+              className="color white"
+            />
+            <img
+              style={imgStyle}
+              name="delete"
+              className="clear"
+              src="https://i.imgur.com/o75tGAW.png"
+            />
+          </div>
+
+          <div style={chatboxStyle}>
             <Messages messages={messages} name={name} />
             <Input
               message={message}
               setMessage={setMessage}
               sendMessage={sendMessage}
             />
+            <TextContainer users={users} />
           </div>
-          <TextContainer users={users} />
-        </Grid>
-      </Container>
-      <div>
-        <SketchPicker
-          color={currColor}
-          onChangeComplete={color => {
-            current.color = color.hex
-            setcurrColor(color.hex)
-          }}
-        />
-        <img
-          name="eraser"
-          style={imgStyle}
-          src="https://cdn2.iconfinder.com/data/icons/design-tools-27/1024/eraser-512.png"
-          className="color white"
-        />
-        <img
-          style={imgStyle}
-          name="delete"
-          className="clear"
-          src="https://i.imgur.com/o75tGAW.png"
-        />
-        <div>
-          <canvas ref={canvasRef} style={mystyle} />
+        </div>
+        <div style={canvasStyle}>
+          <canvas ref={canvasRef} />
         </div>
       </div>
     </div>
