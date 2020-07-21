@@ -16,7 +16,7 @@ const StartForm = props => {
         <div>
           <Form.Field>
             <label>
-              <small>Enter Username</small>
+              <large>Enter Username</large>
             </label>
             <input
               name="username"
@@ -26,7 +26,7 @@ const StartForm = props => {
           </Form.Field>
           <Form.Field>
             <label>
-              <small>Enter Game name</small>
+              <large>Enter Room name</large>
             </label>
             <input
               name="gameCode"
