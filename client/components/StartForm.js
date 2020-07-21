@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {createPlayer} from '../store'
-import {Button, Form} from 'semantic-ui-react'
+import {Button, Form, Header} from 'semantic-ui-react'
 import history from '../history'
 
 const StartForm = props => {
@@ -11,35 +11,38 @@ const StartForm = props => {
   const [room, setRoom] = useState('')
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <div>
-        <Form.Field>
-          <label>
-            <small>Enter Username</small>
-          </label>
-          <input
-            name="username"
-            type="text"
-            onChange={e => setName(e.target.value)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>
-            <small>Enter Game name</small>
-          </label>
-          <input
-            name="gameCode"
-            type="text"
-            onChange={e => setRoom(e.target.value)}
-          />
-        </Form.Field>
+    <div>
+      <Form onSubmit={handleSubmit}>
         <div>
-          <Button basic color="black" type="submit">
-            Start Game
-          </Button>
+          <Form.Field>
+            <label>
+              <small>Enter Username</small>
+            </label>
+            <input
+              name="username"
+              type="text"
+              onChange={e => setName(e.target.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>
+              <small>Enter Game name</small>
+            </label>
+            <input
+              name="gameCode"
+              type="text"
+              onChange={e => setRoom(e.target.value)}
+            />
+          </Form.Field>
+          <div>
+            <Button basic color="black" type="submit">
+              Start Game
+            </Button>
+          </div>
         </div>
-      </div>
-    </Form>
+        <div />
+      </Form>
+    </div>
   )
 }
 
