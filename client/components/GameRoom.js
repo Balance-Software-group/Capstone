@@ -187,12 +187,22 @@ export const GameRoom = ({location}) => {
     right: '0',
     bottom: '0',
     top: '0',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    float: 'right'
   }
 
   const imgStyle = {
-    width: '5%',
-    height: '5%'
+    width: '20%',
+    height: '20%'
+  }
+
+  const restStyle = {
+    float: 'left',
+    width: '16%'
+  }
+  const canvasStyle = {
+    float: 'right',
+    width: '84%'
   }
 
   return (
@@ -201,47 +211,44 @@ export const GameRoom = ({location}) => {
         Welcome to room {room}! Dust off your drawing skills and chat with your
         friends!
       </h3>
-      <Container>
-        <Grid.Row>
-          <Grid.Column>
-            <Grid.Row>
-              <SketchPicker
-                color={currColor}
-                onChangeComplete={color => {
-                  current.color = color.hex
-                  setcurrColor(color.hex)
-                }}
-              />
-              <div>
-                <img
-                  name="eraser"
-                  style={imgStyle}
-                  src="https://cdn2.iconfinder.com/data/icons/design-tools-27/1024/eraser-512.png"
-                  className="color white"
-                />
-                <img
-                  style={imgStyle}
-                  name="delete"
-                  className="clear"
-                  src="https://i.imgur.com/o75tGAW.png"
-                />
-              </div>
-            </Grid.Row>
-            <Grid.Row>
-              <div>
-                <Messages messages={messages} name={name} />
-                <Input
-                  message={message}
-                  setMessage={setMessage}
-                  sendMessage={sendMessage}
-                />
-                <TextContainer users={users} />
-              </div>
-            </Grid.Row>
-          </Grid.Column>
-        </Grid.Row>
-      </Container>
-      <canvas ref={canvasRef} style={mystyle} />
+      <div style={mystyle}>
+        <div style={restStyle}>
+          <SketchPicker
+            color={currColor}
+            onChangeComplete={color => {
+              current.color = color.hex
+              setcurrColor(color.hex)
+            }}
+          />
+          <div>
+            <img
+              name="eraser"
+              style={imgStyle}
+              src="https://cdn2.iconfinder.com/data/icons/design-tools-27/1024/eraser-512.png"
+              className="color white"
+            />
+            <img
+              style={imgStyle}
+              name="delete"
+              className="clear"
+              src="https://i.imgur.com/o75tGAW.png"
+            />
+          </div>
+
+          <div>
+            <Messages messages={messages} name={name} />
+            <Input
+              message={message}
+              setMessage={setMessage}
+              sendMessage={sendMessage}
+            />
+            <TextContainer users={users} />
+          </div>
+        </div>
+        <div style={canvasStyle}>
+          <canvas ref={canvasRef} />
+        </div>
+      </div>
     </div>
   )
 }
