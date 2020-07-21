@@ -3,7 +3,7 @@ import {SketchPicker} from 'react-color'
 import queryString from 'query-string'
 import io from 'socket.io-client'
 import {Timer, UserDashboard} from '../components'
-import {Container, Grid, Header, Icon} from 'semantic-ui-react'
+import {Container, Grid, Header, Icon, GridColumn} from 'semantic-ui-react'
 import Input from './Input'
 import Messages from './Messages'
 import TextContainer from './TextContainer'
@@ -197,49 +197,51 @@ export const GameRoom = ({location}) => {
 
   return (
     <div>
+      <h3>
+        Welcome to room {room}! Dust off your drawing skills and chat with your
+        friends!
+      </h3>
       <Container>
-        <Grid>
-          <Grid.Row>
-            <h3>
-              Welcome to room {room}! Type your guesses here and chat with your
-              friends!
-            </h3>
-          </Grid.Row>
-          <div>
-            <Messages messages={messages} name={name} />
-            <Input
-              message={message}
-              setMessage={setMessage}
-              sendMessage={sendMessage}
-            />
-          </div>
-          <TextContainer users={users} />
-        </Grid>
+        <Grid.Row>
+          <Grid.Column>
+            <Grid.Row>
+              <SketchPicker
+                color={currColor}
+                onChangeComplete={color => {
+                  current.color = color.hex
+                  setcurrColor(color.hex)
+                }}
+              />
+              <div>
+                <img
+                  name="eraser"
+                  style={imgStyle}
+                  src="https://cdn2.iconfinder.com/data/icons/design-tools-27/1024/eraser-512.png"
+                  className="color white"
+                />
+                <img
+                  style={imgStyle}
+                  name="delete"
+                  className="clear"
+                  src="https://i.imgur.com/o75tGAW.png"
+                />
+              </div>
+            </Grid.Row>
+            <Grid.Row>
+              <div>
+                <Messages messages={messages} name={name} />
+                <Input
+                  message={message}
+                  setMessage={setMessage}
+                  sendMessage={sendMessage}
+                />
+                <TextContainer users={users} />
+              </div>
+            </Grid.Row>
+          </Grid.Column>
+        </Grid.Row>
       </Container>
-      <div>
-        <SketchPicker
-          color={currColor}
-          onChangeComplete={color => {
-            current.color = color.hex
-            setcurrColor(color.hex)
-          }}
-        />
-        <img
-          name="eraser"
-          style={imgStyle}
-          src="https://cdn2.iconfinder.com/data/icons/design-tools-27/1024/eraser-512.png"
-          className="color white"
-        />
-        <img
-          style={imgStyle}
-          name="delete"
-          className="clear"
-          src="https://i.imgur.com/o75tGAW.png"
-        />
-        <div>
-          <canvas ref={canvasRef} style={mystyle} />
-        </div>
-      </div>
+      <canvas ref={canvasRef} style={mystyle} />
     </div>
   )
 }
