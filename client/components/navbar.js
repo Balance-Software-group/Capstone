@@ -15,13 +15,11 @@ const myStyle = {
 const Navbar = ({handleClick, isLoggedIn}) => (
   <Header textAlign="center">
     <div>
-      <Link to="/">
-        <img
-          src="https://i.imgur.com/rSNU9Rp.png?1"
-          width="100%"
-          style={myStyle}
-        />
-      </Link>
+      <img
+        src="https://i.imgur.com/rSNU9Rp.png?1"
+        width="100%"
+        style={myStyle}
+      />
       {/* <nav />
     <hr /> */}
     </div>
